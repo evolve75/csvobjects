@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--
+ package.html
+ 
+ Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
+
+ This program is free software; you can redistribute it and/or 
+ modify it under the terms of the GNU General Public License 
+ as published by the Free Software Foundation; either version 2 
+ of the License, or (at your option) any later version. 
+
+ This program is distributed in the hope that it will be useful, 
+ but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ GNU General Public License for more details. 
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+ 
+ Version: $Revision$
+-->
+<html>
+<head>
+<title>net.sf.anupam.csv.formatters package</title>
+
+</head>
+<body>
+
+Provides a framework and default implementations for formatting CSV fields during
+the CSV to POJO parsing. The framework is configurable and can be extended if
+the default formatters are not sufficient.
+
+<p>
+In most usage situations, no formatting is required on the CSV fields during parsing,
+and data formatting can be performed on the source CSV data itself. 
+
+</p>
+
+<p>
+However, minor formatting is necessary in certain circumstances, e.g., 
+when only part of a CSV field value needs to be mapped to a POJO attribute. Common
+examples include extracting the first name from a full name, or changing the
+case of the input string value. This functionality is enabled by this package.
+</p>
+
+<h2>Default Formatters</h2>
+
+<p>
+The following formatters are present in the default system. The declarative formatter
+name is in brackets. Details on each formatter is present in the respective
+class' documentation.
+
+<ul>
+<li>{@link net.sf.anupam.csv.formatters.DoNothingFormatter DoNothingFormatter} <em>(none)</em></li>
+<li>{@link net.sf.anupam.csv.formatters.DoNothingFormatter firstWordFormatter} <em>(firstWord)</em></li>
+<li>{@link net.sf.anupam.csv.formatters.DoNothingFormatter lastWordFormatter} <em>(lastWord)</em></li>
+<li>{@link net.sf.anupam.csv.formatters.DoNothingFormatter AllUpperCaseFormatter} <em>(AllUpperCase)</em></li>
+</ul>
+
+</p>
+
+<h2>Configuration of Formatters</h2>
+
+<p>
+The formatters are registered into the CSV parser framework via the
+<code>csv-formatter-config.xml</code> XML file. The file defines the
+logical formatter name, and the formatter implementation class name.
+</p>
+
+<h2>Custom Formatters</h2>
+<p>
+Customer formatters can be created by implementing the 
+{@link net.sf.anupam.csv.formatters.CSVFieldFormatter CSVFieldFormatter} 
+interface, and its sole method: <code>String format(String)</code>. This method
+acts as the transformation/formatting implementation. It is recommended that
+the custom formatters be stateless and provide re-entrant implementations.
+</p>
+
+<p>
+Once the custom formatters are defined, they can be registered in the
+Framework by updating the <code>csv-formatter-config.xml</code> configuration file.
+A custom <code>Xdoclet</code> template/tagset is provided for ease of 
+generating the configuration XML file.
+</p>
+
+
+</body>
+</html>

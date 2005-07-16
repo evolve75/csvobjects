@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+
+<!--  
+
+ Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
+
+ This program is free software; you can redistribute it and/or 
+ modify it under the terms of the GNU General Public License 
+ as published by the Free Software Foundation; either version 2 
+ of the License, or (at your option) any later version. 
+
+ This program is distributed in the hope that it will be useful, 
+ but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ GNU General Public License for more details. 
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+ 
+ Version: $Revision$
+ 
+-->
+
+<project name="CSVParser" default="main" basedir=".">
+  
+    <property file="build.properties"/>
+
+    <patternset id="project.libraries">
+        <include name="${dir.lib}/**/*.jar"/>
+    </patternset>
+    
+    <!-- Define the classpaths -->
+    <path id="project.lib.classpath">
+        <fileset dir="${dir.lib}">
+            <include name="**/*.jar"/>                
+        </fileset>
+    	   <!-- <path location="${java."></path> -->
+    </path>
+
+    <!-- Path for compilation -->
+    <path id="project.compile.classpath">
+        <pathelement path="${dir.build}"/>
+        <path refid="project.lib.classpath"/>
+    </path>
+
+    <!-- Source code path -->
+    <path id="project.compile.sourcepath">
+        <pathelement path="${dir.src}"/>
+        <pathelement path="${dir.gensrc}"/>
+    </path>
+
+    <!-- Define the XDoclet task -->
+    <taskdef name="xdoclet"
+                     classname="xdoclet.DocletTask"/>
+    
+    
+   <taskdef resource="checkstyletask.properties"/> 
+    
+    
+    <!-- Default target -->
+    <target name="main"
+            depends="init, build, test"
+            description="Default target"/>
+    
+    <!-- Default target -->
+    <target name="all" 
+            depends="clean, build, test, checkstyle, docs" 
+            description="Performs all the project tasks"/>
+    
+    <!-- Prepares the destination directories. -->
+    <target name="init" 
+            description="[Internal] Creates the output directories">
+          
+        <buildnumber file="${file.bldnumber}"/>
+    
+        <echo message="Build Number = ${build.number}"/>
+
+        <mkdir dir="${dir.gensrc}"/>  
+        <mkdir dir="${dir.build}"/> 
+
+        <mkdir dir="${dir.dist}"/>
+        <mkdir dir="${dir.doc}/api"/>
+    
+        <copy todir="${dir.build}"
+  		      includeEmptyDirs="false">
+            <fileset dir="${dir.src}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Removes the generated files and directories. -->	
+    <target name="clean"
+            description="Remove all generated files and output directories">
+
+        <delete dir="${dir.gensrc}"/>
+        <delete dir="${dir.build}"/>
+        <delete dir="${dir.dist}"/>
+        <delete dir="${dir.doc}/api"/>    
+
+    </target>
+
+    <!-- Builds the system -->
+    <target name="build"
+            depends="init, compile, generatecode, jar"
+            description="Performs the build"/>
+    
+    <!-- Performs code compilation. -->
+    <target name="compile" 
+            depends="init"
+            description="[Internal] Compiles all source code.">
+
+        <javac compiler="javac1.5"
+               failonerror="true"
+               deprecation="on" 
+               srcdir="${dir.src}"  
+               destdir="${dir.build}"
+               includeantruntime="false"
+               includejavaruntime="true"
+               optimize="true"
+               source="1.5"   
+               fork="false">
+    	
+            <sourcepath>
+                <path refid="project.compile.sourcepath"/>
+            </sourcepath>
+            
+            <classpath refid="project.compile.classpath"/>
+
+        </javac>
+    </target>
+
+    <!-- Performs all code generation -->
+    <target name="generatecode"
+            depends="generate.csv-test-mapping,generate.csv-formatter-mapping"
+            description="[Internal] Performs all code generation"/>
+
+    <!-- Generates the sample CSV mapping file for testing -->
+    <target name="generate.csv-test-mapping"
+            depends="init"
+            description="[Internal] Generates the sample CSV mapping files">
+
+        <xdoclet destdir="${dir.gensrc}">
+            <fileset dir="${dir.src}">
+                <include name="test/**/*.java"/>
+                <contains text="@csv.bean-mapping"
+                          casesensitive="true"
+                          ignorewhitespace="false"/>
+            </fileset>
+
+            <template templateFile="${basedir}/csv-mapping.xdt"
+                      destinationFile="${file.csv-mapping}"/>
+        </xdoclet>
+    </target>
+
+    <!-- Generates the CSV Formatter configuration mapping -->
+    <target name="generate.csv-formatter-mapping"
+            depends="init"
+            description="[Internal] Generates the custom CSV Formatter configuration mapping files">
+
+        <xdoclet destdir="${dir.gensrc}">
+            <fileset dir="${dir.src}">
+                <include name="**/*.java"/>
+                <contains text="@csv.formatter-mapping" 
+                          casesensitive="true"
+                          ignorewhitespace="false"/>
+            </fileset>                
+
+            <template templateFile="${basedir}/csv-formatter.xdt"
+                      destinationFile="${file.csv-formatter-cfg}"/>
+        </xdoclet>
+    </target>    
+
+    <!-- Creates the distribution Jar files -->    
+    <target name="jar" 
+            depends="compile,generatecode"
+            description="[Internal] Generates the distribution jar files">
+
+        <jar jarfile="${dir.dist}/${ant.project.name}-${build.number}.jar">
+            <fileset dir="${dir.build}">
+                <exclude name="**/*Test.class"/>
+                <exclude name="test/**/*.*"/>
+            </fileset>
+            
+            <fileset dir="${dir.gensrc}">
+                <exclude name="${file.csv-mapping}"/>
+                <exclude name="test/**/*.*"/>
+            </fileset>
+            
+            <manifest>
+                <attribute name="Built-By" value="Anupam Sengupta"/>
+                <attribute name="Sealed" value="true"/>
+            </manifest>
+        </jar>
+    
+        <jar jarfile="${dir.dist}/${ant.project.name}-${build.number}_tests.jar">
+            <fileset dir="${dir.build}">
+                <include name="**/*Test.class"/>
+                <include name="test/**/*.*"/>
+            </fileset>
+    		
+            <fileset dir="${dir.gensrc}">
+                <include name="${file.csv-mapping}"/>
+                <include name="test/**/*.*"/>
+            </fileset>
+            
+            <manifest>
+                <attribute name="Built-By" value="Anupam Sengupta"/>
+                <attribute name="Sealed" value="true"/>
+            </manifest>
+        </jar>
+    
+        <checksum algorithm="MD5">
+            <fileset dir="${dir.dist}">
+                <include name="${ant.project.name}--${build.number}.jar"/>
+                <include name="${ant.project.name}--${build.number}_tests.jar"/>
+            </fileset>
+        </checksum>       
+
+    </target>
+
+    <target name="checkstyle"
+            description="Generates a report of code convention violations.">
+
+      <checkstyle config="checkstyle_sun_checks.xml"
+                  failureProperty="checkstyle.failure"
+                  failOnViolation="false">
+        <formatter type="xml" tofile="${dir.dist}/checkstyle_report-${build.number}.xml"/>
+        <fileset dir="${dir.src}">
+            <include name="**/*.java"/>
+            <exclude name="test/**/*.java"/>
+        </fileset>
+      </checkstyle>
+
+      <style in="${dir.dist}/checkstyle_report-${build.number}.xml" 
+             out="${dir.dist}/checkstyle_report-${build.number}.html" 
+             style="checkstyle-simple.xsl"/>
+
+    </target>
+    
+    <!-- Generates the Javadoc --> 
+    <target name="docs" 
+            depends="init, compile" 
+            description="Generates the Javadoc">
+
+        <javadoc defaultexcludes="yes"
+                 destdir="${dir.doc}/api"
+                 access="package"
+                 author="true"
+                 version="true"
+                 use="true"
+                 splitindex="true"
+                 windowtitle="CSV Parser Framework API Documentation"
+                 source="1.5"    
+                 breakiterator="yes"
+                 linksource="yes"
+                 verbose="false"
+	           >
+			
+            <tag name="csv.bean-mapping"
+                 enabled="true"
+                 description="CSV Bean mapping"
+                 scope="types"/>
+
+            <tag name="csv.field-mapping"
+                 enabled="true"
+                 description="CSV Field mapping"
+                 scope="methods"/>
+
+            <tag name="csv.formatter-mapping"
+                 enabled="true"
+                 description="CSV Formatter"
+                 scope="types"/>
+            
+            <doctitle><![CDATA[<h1>CSV Parser Framework</h1>]]></doctitle>
+            <header><![CDATA[<h3>CSV Parser</h3>]]></header>
+            <footer><![CDATA[<a href="http://csvparser.sourceforge.net">http://csvparser.sourceforge.net</a>]]></footer>
+            <bottom><![CDATA[<em>(c) Anupam Sengupta 2005</em>]]></bottom>
+
+            <packageset dir="${dir.src}">
+                <include name="net/**"/>
+                <include name="test/**"/>
+            </packageset>
+            
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/" 
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/J2SE1.5"/> 
+
+            <link href="http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_1/" 
+                     offline="true"
+                     packagelistloc="${dir.doc}/package-list/commons-collections-3.1"/>
+
+            <link href="http://jakarta.apache.org/commons/logging/api/" 
+                     offline="true"
+                     packagelistloc="${dir.doc}/package-list/commons-logging-1.0.4"/>
+
+            <link href="http://jakarta.apache.org/commons/lang/api/" 
+                                 offline="true"
+                                 packagelistloc="${dir.doc}/package-list/commons-lang-2.1"/>
+
+            <link href="http://jakarta.apache.org/commons/digester/commons-digester-1.7/docs/api/" 
+                                 offline="true"
+                                 packagelistloc="${dir.doc}/package-list/commons-digester-1.7"/>
+            
+            <link href="http://ostermiller.org/utils/doc/" 
+                     offline="true"
+                     packagelistloc="${dir.doc}/package-list/ostermiller/"/>
+
+            <link href="http://www.junit.org/junit/javadoc/3.8.1/index.htm" 
+                     offline="true"
+                     packagelistloc="${dir.doc}/package-list/junit-3.8.1"/>
+            
+            <fileset dir="${dir.src}">
+                <include name="**/*.java"/>
+            </fileset>
+
+            <classpath refid="project.lib.classpath"/>
+            <group title="User packages" packages="net.sf.anupam.csv"/>
+            <group title="Taglets" packages="net.sf.anupam.csv.taglets"/>
+            <group title="Implementation Packages" 
+                   packages="net.sf.anupam.csv.formatters, net.sf.anupam.csv.mapping"/>
+            <group title="Test Packages" packages="test.net.sf.anupam.csv.*"/>
+            
+            <taglet name="net.sf.anupam.csv.taglets.CSVBeanMappingTaglet"
+                    path="${dir.build}"/>
+            
+            <taglet name="net.sf.anupam.csv.taglets.CSVFieldMappingTaglet"
+                    path="${dir.build}"/>
+            
+            <taglet name="net.sf.anupam.csv.taglets.CSVFormatterMappingTaglet"
+                    path="${dir.build}"/>
+        </javadoc>
+
+        <zip destfile="${dir.dist}/${ant.project.name}-${build.number}_docs.zip" 
+             basedir="${dir.doc}" 
+             compress="true"/>
+    </target>
+  
+    <!-- Performs all tests. -->
+    <target name="test" 
+            depends="jar" 
+            description="Runs all the JUnit Tests">
+          
+        <delete dir="${dir.dist}/test-results-xml"/>
+        <delete dir="${dir.dist}/test-results-html"/>          
+        <mkdir dir="${dir.dist}/test-results-xml"/>
+        <mkdir dir="${dir.dist}/test-results-html"/>
+
+        <junit printsummary="on" 
+               fork="true" 
+               haltonfailure="false"
+               failureproperty="tests.failed"
+               showoutput="false">
+
+            <sysproperty key="SAMPLE_CSV_FILE"
+                         value="${file.sample_csv_file}"/>
+            <classpath>
+                <path refid="project.compile.classpath"/>
+                <path path="${dir.gensrc}"/>       
+            </classpath>
+
+            <formatter type="xml"/>
+
+            <batchtest todir="${dir.dist}/test-results-xml">
+                <fileset dir="${dir.src}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+        </junit>
+
+        <junitreport todir="${dir.dist}/test-results-html">
+            <fileset dir="${dir.dist}/test-results-xml">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            
+            <report format="frames" 
+                    todir="${dir.dist}/test-results-html"/>
+        </junitreport>
+	
+        <zip destfile="${dir.dist}/${ant.project.name}_test_results.zip" 
+             basedir="${dir.doc}" 
+             compress="true">
+            
+            <fileset dir="${dir.dist}">
+                <include name="test-results-xml/**/*"/>
+                <include name="test-results-html/**/*"/>
+            </fileset>
+
+        </zip>
+
+        <fail if="tests.failed">
+    *******************************************************
+    *******************************************************
+    One or more tests failed. Check the output...
+    *******************************************************
+    *******************************************************
+        </fail>
+    </target>
+
+    <!-- Creates a ZIP distribution of the source code -->
+    <target name="zip"
+            description="Creates a ZIP of the source code">
+        
+        <delete file="${ant.project.name}.zip" 
+                quiet="true"/>
+        
+        <zip basedir="${basedir}"
+             destfile="${ant.project.name}.zip"
+             compress="true"
+             update="true">
+            
+            <exclude name="**/.*"/>   
+            <exclude name="**/*.jar"/>
+            <exclude name="bin/**/*.*/"/>
+            <exclude name="${dir.doc}/api/*.*"/>
+            <exclude name="${dir.lib}/**/*.*"/>                
+            <exclude name="${dir.gensrc}/**/*.*"/> 
+            <exclude name="${dir.dist}/**/*.*"/>    
+            <exclude name="${dir.build}/**/*.*"/>
+        </zip>
+    </target> 
+</project>

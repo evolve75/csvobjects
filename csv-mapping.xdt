@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<XDtComment:comment>
+ csv-formatter.xdt
+ 
+ Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
+
+ This program is free software; you can redistribute it and/or 
+ modify it under the terms of the GNU General Public License 
+ as published by the Free Software Foundation; either version 2 
+ of the License, or (at your option) any later version. 
+
+ This program is distributed in the hope that it will be useful, 
+ but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ GNU General Public License for more details. 
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+ 
+ Version: $Revision$
+
+</XDtComment:comment>
+
+<!-- 
+   CSV Mapping file for auto-bean parsing from CSV input files.
+   <XDtI18n:getString resource="do_not_edit"/>
+-->
+
+<csv-mapping>
+
+
+<XDtClass:forAllClasses>
+	<XDtClass:ifIsClassNotAbstract>
+    <XDtClass:ifHasClassTag tagName="csv.bean-mapping">
+    
+    <!--
+        Bean mapping for <XDtClass:className/>
+    -->
+    <bean-mapping name="<XDtClass:classTagValue tagName="csv.bean-mapping" paramName="bean-name" default="<XDtClass:className/>"/>"
+                  class="<XDtClass:fullClassName/>"
+                  csvHeader="<XDtClass:classTagValue tagName="csv.bean-mapping" paramName="csv-header" default="false" />">
+                  
+    
+    		<XDtMethod:forAllMethods>
+    		
+    		<XDtMethod:ifHasMethodTag tagName="csv.field-mapping"
+    		                          paramName="position">
+         <XDtMethod:ifIsGetter tagName="csv.field-mapping">
+         
+         
+         <field-mapping name="<XDtMethod:methodTagValue tagName="csv.field-mapping" paramName="field-name" default="<XDtMethod:propertyName/>"/>"
+                        type="<XDtMethod:methodType/>"
+                        position="<XDtMethod:methodTagValue tagName="csv.field-mapping" paramName="position"/>"
+                        attribute="<XDtMethod:propertyName/>"
+					    reformat="<XDtMethod:methodTagValue tagName="csv.field-mapping" paramName="reformat" default="none"/>"
+                        bean-ref="<XDtMethod:methodTagValue tagName="csv.field-mapping" paramName="bean-ref" default="none"/>"/>
+    		
+    		
+    		 </XDtMethod:ifIsGetter>
+    		</XDtMethod:ifHasMethodTag>
+    		
+    		</XDtMethod:forAllMethods>	
+    
+    </bean-mapping>
+	
+	</XDtClass:ifHasClassTag>
+	</XDtClass:ifIsClassNotAbstract>
+</XDtClass:forAllClasses>
+
+<XDtMerge:merge file="csv-mapping-merge.xml"
+                generateMergedFile="false">
+<!-- 
+  You can merge additional non-Xdoclet generated content here
+  by creating a file called csv-mapping-merge.xml.
+-->
+ 
+</XDtMerge:merge>
+
+</csv-mapping>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--  
+ package.html
+ 
+ Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
+
+ This program is free software; you can redistribute it and/or 
+ modify it under the terms of the GNU General Public License 
+ as published by the Free Software Foundation; either version 2 
+ of the License, or (at your option) any later version. 
+
+ This program is distributed in the hope that it will be useful, 
+ but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+ GNU General Public License for more details. 
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software 
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+ 
+ Version: $Revision$
+-->
+<html>
+<head>
+<title>net.sf.anupam.csv package</title>
+<!--
+
+  
+-->
+</head>
+<body>
+
+Provides a framework for parsing and reading CSV files transparently, via meta-data definitions, a'la Hibernate. 
+This allows yor application's CSV processing and parsing logic to be completely transparent and dependent only
+on POJO JavaBean representation of the the CSV records.
+
+<p>
+The main class for the framework is {@link net.sf.anupam.csv.CSVParser CSVParser}, which provides a {@link java.lang.Iterable Iterable}
+interface for parsing and retrieving the POJO beans from the CSV records transparently. Configuration of the parser is done via
+XML mapping files. 
+</p>
+
+<p>
+The {@link net.sf.anupam.csv.CSVParserFactory CSVParserFactory} is the main factory for creation and
+instantiation on the CSV parsers.
+</p>
+
+<p>
+Implementation of the parser is based on <a href="http://ostermiller.org/utils/">Steven Ostermiller's</a> excellent
+CSV parsing engine.
+</p>
+
+<h2>Configuration</h2>
+
+Configuration of the CSV to POJO mapping is done via an XML mapping file, which 
+should be named <code>csv-mapping.xml</code>. The file needs to be present
+in the <code>CLASSPATH</code> at the root level. 
+
+<p>
+The parser framework provides convenience 
+<a href="http://xdoclet.sourceforge.net">Xdoclet</a> tagsets and 
+templates for auto-generation of the mapping XML file directly from the
+POJOs being mapped. This is similar to the <code>Xdoclet</code> support
+for <a href="http://www.hibernate.org">Hibernate</a> persistance framework, 
+and behaves in a similar fashion in terms of the mapping and configuration 
+generation.
+</p>
+
+<p>
+Format of the file is:<br>
+
+
+<code>
+&lt;?xml version="1.0"?&gt;
+<br>
+
+&lt;csv-mapping&gt;
+<br>	
+	&lt;bean-mapping name="declarative name of the POJO bean to be mapped"
+<br>
+	              class="fully qualified name of the POJO's class"&gt;
+<br>	
+	&lt;/bean-mapping&gt;
+<br>
+&lt;/csv-mapping&gt;
+
+</code>
+<p>
+
+<h2>Logging and Debugging</h2>
+
+<p>
+The framework uses the <a href="http://jakarta.apache.org/commons/logging/">Jakarta Commons logging</a> as its logging framework. 
+Any standard setup (including <a href=""http://logging.apache.org/log4j/docs/">Log4j</a>) can be used as the actual logger.
+</p>
+
+<h2>Notes</h2>
+<ul>
+<li>Note that the current implementation is <strong>read-only</strong> 
+and does not offer any mechanism for writing out Java objects to CSV files.</li>
+
+<li>The current implementation is <a href="http://java.sun.com/j2se/1.5.0/index.jsp">Java 1.5</a> only</li>
+</ul>
+
+</body>
+</html>
