@@ -177,7 +177,7 @@
             depends="compile,generatecode"
             description="[Internal] Generates the distribution jar files">
 
-        <jar jarfile="${dir.dist}/${ant.project.name}-${build.number}.jar">
+        <jar jarfile="${dir.dist}/${ant.project.name}-${release.number}.jar">
             <fileset dir="${dir.build}">
                 <exclude name="**/*Test.class"/>
                 <exclude name="test/**/*.*"/>
@@ -194,7 +194,7 @@
             </manifest>
         </jar>
     
-        <jar jarfile="${dir.dist}/${ant.project.name}-${build.number}_tests.jar">
+        <jar jarfile="${dir.dist}/${ant.project.name}_tests-${release.number}.jar">
             <fileset dir="${dir.build}">
                 <include name="**/*Test.class"/>
                 <include name="test/**/*.*"/>
@@ -213,28 +213,29 @@
     
         <checksum algorithm="MD5">
             <fileset dir="${dir.dist}">
-                <include name="${ant.project.name}--${build.number}.jar"/>
-                <include name="${ant.project.name}--${build.number}_tests.jar"/>
+                <include name="${ant.project.name}-${release.number}.jar"/>
             </fileset>
         </checksum>       
 
     </target>
 
+	<!-- Performs Checkstyle checks -->
     <target name="checkstyle"
             description="Generates a report of code convention violations.">
 
       <checkstyle config="checkstyle_sun_checks.xml"
                   failureProperty="checkstyle.failure"
                   failOnViolation="false">
-        <formatter type="xml" tofile="${dir.dist}/checkstyle_report-${build.number}.xml"/>
+        <formatter type="xml" 
+        	           tofile="${dir.dist}/checkstyle_report-${release.number}.xml"/>
         <fileset dir="${dir.src}">
             <include name="**/*.java"/>
             <exclude name="test/**/*.java"/>
         </fileset>
       </checkstyle>
 
-      <style in="${dir.dist}/checkstyle_report-${build.number}.xml" 
-             out="${dir.dist}/checkstyle_report-${build.number}.html" 
+      <style in="${dir.dist}/checkstyle_report-${release.number}.xml" 
+             out="${dir.dist}/checkstyle_report-${release.number}.html" 
              style="checkstyle-simple.xsl"/>
 
     </target>
@@ -332,7 +333,7 @@
                     path="${dir.build}"/>
         </javadoc>
 
-        <zip destfile="${dir.dist}/${ant.project.name}-${build.number}_docs.zip" 
+        <zip destfile="${dir.dist}/${ant.project.name}_docs-${release.number}.zip" 
              basedir="${dir.doc}" 
              compress="true"/>
     </target>
@@ -376,10 +377,10 @@
             </fileset>
             
             <report format="frames" 
-                    todir="${dir.dist}/test-results-html"/>
+                    todir="${dir.dist}/test-results-htm"/>
         </junitreport>
 	
-        <zip destfile="${dir.dist}/${ant.project.name}_test_results.zip" 
+        <zip destfile="${dir.dist}/${ant.project.name}_test_results-${release.number}.zip" 
              basedir="${dir.doc}" 
              compress="true">
             
@@ -399,23 +400,49 @@
         </fail>
     </target>
 
+    <target name="dist"
+	        depends="init,build,checkstyle,docs,test"
+	        description="Creates the distribution ZIP">
+    	
+    		<delete file="${ant.project.name}-bin-${release.number}.zip"
+                 quiet="true"/>
+    	
+    	
+    		<zip basedir="${basedir}"
+    	         destfile="${ant.project.name}-bin-${release.number}.zip"
+    	         compress="true"
+    	         update="true">
+    			
+    			<exclude name="*.zip"/>
+    			<exclude name="*.log"/>
+    			<include name="LICENSE"/>
+    			<include name="*.xdt"/>
+    			<include name="${dir.lib}/**/*.*"/>
+    			<include name="${dir.dist}/**/*.*"/>
+    			<exclude name="${dir.doc}/package-list/**/*.*"/>
+    			<include name="${dir.doc}/**/*.*"/>
+    			
+    		</zip>
+    	
+	</target>
+	
     <!-- Creates a ZIP distribution of the source code -->
-    <target name="zip"
+    <target name="src-dist"
             description="Creates a ZIP of the source code">
         
-        <delete file="${ant.project.name}.zip" 
+        <delete file="${ant.project.name}-src-${release.number}.zip" 
                 quiet="true"/>
         
         <zip basedir="${basedir}"
-             destfile="${ant.project.name}.zip"
+             destfile="${ant.project.name}-src-${release.number}.zip"
              compress="true"
              update="true">
             
-            <exclude name="**/.*"/>   
-            <exclude name="**/*.jar"/>
+            <exclude name="**/.*"/>
+        	    <exclude name="*.zip"/>
+        		<exclude name="*.log"/>
             <exclude name="bin/**/*.*/"/>
             <exclude name="${dir.doc}/api/*.*"/>
-            <exclude name="${dir.lib}/**/*.*"/>                
             <exclude name="${dir.gensrc}/**/*.*"/> 
             <exclude name="${dir.dist}/**/*.*"/>    
             <exclude name="${dir.build}/**/*.*"/>
