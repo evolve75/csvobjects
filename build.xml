@@ -252,7 +252,7 @@
                  version="true"
                  use="true"
                  splitindex="true"
-                 windowtitle="CSV Parser Framework API Documentation"
+                 windowtitle="CSV Parser Framework API Documentation Release ${release.number}"
                  source="1.5"    
                  breakiterator="yes"
                  linksource="yes"
@@ -279,10 +279,13 @@
             <footer><![CDATA[<a href="http://csvparser.sourceforge.net">http://csvparser.sourceforge.net</a>]]></footer>
             <bottom><![CDATA[<em>(c) Anupam Sengupta 2005</em>]]></bottom>
 
-            <packageset dir="${dir.src}">
-                <include name="net/**"/>
-                <include name="test/**"/>
-            </packageset>
+            <fileset dir="${dir.src}">
+                
+              	<exclude name="**/*Test.java"/>
+            	    <include name="net/**/*.java"/>
+                <include name="test/**/*.java"/>
+            	   
+            </fileset>
             
             <link href="http://java.sun.com/j2se/1.5.0/docs/api/" 
                   offline="true"
@@ -311,10 +314,6 @@
             <link href="http://www.junit.org/junit/javadoc/3.8.1/index.htm" 
                      offline="true"
                      packagelistloc="${dir.doc}/package-list/junit-3.8.1"/>
-            
-            <fileset dir="${dir.src}">
-                <include name="**/*.java"/>
-            </fileset>
 
             <classpath refid="project.lib.classpath"/>
             <group title="User packages" packages="net.sf.anupam.csv"/>
@@ -377,7 +376,7 @@
             </fileset>
             
             <report format="frames" 
-                    todir="${dir.dist}/test-results-htm"/>
+                    todir="${dir.dist}/test-results-html"/>
         </junitreport>
 	
         <zip destfile="${dir.dist}/${ant.project.name}_test_results-${release.number}.zip" 

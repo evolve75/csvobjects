@@ -1,2 +1,2 @@
-Srl. #,Employee #,Name,Status,TCS Designation,Skill,Role,Contractor ID,MyTime ID,Start Date,End Date,Location,Released on,Allocated To,VP
-1,103109,Indranil Mukherjee,Active,ASC,Web,Sr. Programmer,C1032939,B5P7,1-Jan-05,31-Dec-05,Offsite,,James Shelby,Elliott Glazer
+Srl,Employee ID,Name,Status,Designation,Skill,Role,Client ID,Billing ID
+1,123456,John Doe,Active,Lead,DEV,Programmer,CONTRACTOR007,BILLID01

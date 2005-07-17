@@ -92,14 +92,14 @@ public class CSVParserTest
             for (Object bean : parser) {
                 assertTrue(bean instanceof Employee);
                 final Employee empl = (Employee) bean;
-                assertEquals("103109", empl.getEmployeeID());
-                assertEquals("Indranil", empl.getFirstName());
-                assertEquals("Mukherjee", empl.getLastName());
-                assertEquals("B5P7", empl.getClientSuppliedID());
-                assertEquals("C1032939", empl.getClientSuppliedSecondaryID());
+                assertEquals("123456", empl.getEmployeeID());
+                assertEquals("John", empl.getFirstName());
+                assertEquals("Doe", empl.getLastName());
+                assertEquals("BILLID01", empl.getClientSuppliedID());
+                assertEquals("CONTRACTOR007", empl.getClientSuppliedSecondaryID());
                 final Designation desgn = empl.getDesignation();
                 assertNotNull(desgn);
-                assertEquals("ASC", desgn.getDesignation());
+                assertEquals("Lead", desgn.getDesignation());
                 log.info(empl);
             }
         } catch (final FileNotFoundException e) {
