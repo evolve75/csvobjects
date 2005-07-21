@@ -97,8 +97,14 @@
         <delete dir="${dir.gensrc}"/>
         <delete dir="${dir.build}"/>
         <delete dir="${dir.dist}"/>
-        <delete dir="${dir.doc}/api"/>    
-
+        <delete dir="${dir.doc}/api"/>
+    	    <delete quiet="true">
+    	    		<fileset dir="${basedir}">
+    	    			<include name="${ant.project.name}-bin-*.zip"/>
+    	    			<include name="${ant.project.name}-src-*.zip"/>
+    	    			<include name="${ant.project.name}.log"/>
+    	    		</fileset>
+    	    	</delete>
     </target>
 
     <!-- Builds the system -->
@@ -332,9 +338,6 @@
                     path="${dir.build}"/>
         </javadoc>
 
-        <zip destfile="${dir.dist}/${ant.project.name}_docs-${release.number}.zip" 
-             basedir="${dir.doc}" 
-             compress="true"/>
     </target>
   
     <!-- Performs all tests. -->
@@ -379,16 +382,6 @@
                     todir="${dir.dist}/test-results-html"/>
         </junitreport>
 	
-        <zip destfile="${dir.dist}/${ant.project.name}_test_results-${release.number}.zip" 
-             basedir="${dir.doc}" 
-             compress="true">
-            
-            <fileset dir="${dir.dist}">
-                <include name="test-results-xml/**/*"/>
-                <include name="test-results-html/**/*"/>
-            </fileset>
-
-        </zip>
 
         <fail if="tests.failed">
     *******************************************************
@@ -397,30 +390,31 @@
     *******************************************************
     *******************************************************
         </fail>
+	
     </target>
 
     <target name="dist"
 	        depends="init,build,checkstyle,docs,test"
 	        description="Creates the distribution ZIP">
-    	
-    		<delete file="${ant.project.name}-bin-${release.number}.zip"
-                 quiet="true"/>
-    	
-    	
-    		<zip basedir="${basedir}"
-    	         destfile="${ant.project.name}-bin-${release.number}.zip"
+    	    	
+    		<zip destfile="${ant.project.name}-bin-${release.number}.zip"
     	         compress="true"
     	         update="true">
-    			
-    			<exclude name="*.zip"/>
-    			<exclude name="*.log"/>
-    			<include name="LICENSE"/>
-    			<include name="*.xdt"/>
-    			<include name="${dir.lib}/**/*.*"/>
-    			<include name="${dir.dist}/**/*.*"/>
-    			<exclude name="${dir.doc}/package-list/**/*.*"/>
-    			<include name="${dir.doc}/**/*.*"/>
-    			
+    		
+    			<zipfileset dir="${basedir}"
+    				        prefix="${ant.project.name}-${release.number}">
+    				<include name="*.*"/>
+    				<include name="LICENSE"/>
+    				<exclude name="build.*"/>
+    				<exclude name="checkstyle*.*"/>
+    				<exclude name=".*"/>
+    				<exclude name="*.zip"/>
+    				<exclude name="*.log"/>
+    				<include name="${dir.dist}/**/*.*"/>
+    				<include name="${dir.lib}/**/*.*"/>
+    				<include name="${dir.doc}/api/**/*.*"/>
+    				
+    			</zipfileset>
     		</zip>
     	
 	</target>
@@ -429,22 +423,25 @@
     <target name="src-dist"
             description="Creates a ZIP of the source code">
         
-        <delete file="${ant.project.name}-src-${release.number}.zip" 
-                quiet="true"/>
         
-        <zip basedir="${basedir}"
-             destfile="${ant.project.name}-src-${release.number}.zip"
+        <zip destfile="${ant.project.name}-src-${release.number}.zip"
              compress="true"
              update="true">
             
-            <exclude name="**/.*"/>
-        	    <exclude name="*.zip"/>
-        		<exclude name="*.log"/>
-            <exclude name="bin/**/*.*/"/>
-            <exclude name="${dir.doc}/api/*.*"/>
-            <exclude name="${dir.gensrc}/**/*.*"/> 
-            <exclude name="${dir.dist}/**/*.*"/>    
-            <exclude name="${dir.build}/**/*.*"/>
+        	   <zipfileset dir="${basedir}"
+        	   	           prefix="${ant.project.name}-${release.number}">
+        	   	     <include name="*.*"/>
+        	   	     <include name="LICENSE"/>
+        	   		 <exclude name=".*"/>
+        	   		 <exclude name="*.zip"/>
+             	 <exclude name="*.log"/>
+        	   		 <include name="${dir.src}/**/*.*"/>
+        	   	     <include name="${dir.doc}/**/*.*"/>
+        	   	     <exclude name="${dir.doc}/api/**/*.*"/>
+        	   		 <include name="${dir.lib}/**/*.*"/>
+        	   		 
+        	   </zipfileset>	
         </zip>
-    </target> 
+    </target>
+	
 </project>
