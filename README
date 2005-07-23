@@ -1,0 +1,76 @@
+CSVParser (http://csvparser.sourceforge.net)
+=========
+
+1. Introduction
+
+CSV Parser is a Java library and framework for parsing the common 
+CSV (Comma Separated Value) files, and populating user defined Java
+Bean attributes from the CSV field values.
+
+The framework is based on declarative configuration of the mapping of
+the CSV fields to the users' Java bean objects. This is performed via
+a csv-mapping.xml.
+
+The mapping XML itself can be automatically generated via custom Xdoclet
+tags in the target Java Bean comments.
+
+The project is distributed under the GNU Public License (GPL). See the
+file LICENSE for details.
+
+2. Installation
+
+If you have downloaded the binary file release, then you need to include the
+csvparser-<release_number>.jar file in your project's library or classpath,
+ensure that the dependency libraries are also present in the classpath,
+and thats it!
+
+For more detailed instructions, please refer to the document:
+
+	"I00 - Quick Start" available at:
+
+	http://sourceforge.net/docman/?group_id=143837
+	
+3. Usage
+
+Please refer to the usage documentation available at:
+
+	http://sourceforge.net/docman/?group_id=143837
+	
+In addition, the Javadoc API documentation is available at:
+
+	http://csvparser.sourceforge.net/docs/api/index.html
+	
+4. Community
+
+	* Mailing Lists
+	
+	Two mailing lists are present:
+	
+		csvparser-users@lists.sourceforge.net - for users of the library
+		
+		csvparser-developers@lists.sourceforge.net - for the developers of the library
+	  
+	* Discussion Forums
+	
+	Two forums exist at: https://sourceforge.net/forum/?group_id=143837
+	
+		help - for support and clarifications
+		
+		Open Discussion - Feedback, general discussion on the project
+	
+5. Support
+
+	Support requests can be placed and tracked at:
+	
+		https://sourceforge.net/tracker/?group_id=143837&atid=756849
+		
+5. Feedback 
+
+	The project forums are an excellent place to leave feedback and
+	suggestions. 
+	
+	You can also reach the developer via mail at anupamsg@users.sourceforge.net
+ 
+-------------------
+
+Version: $Revision$
