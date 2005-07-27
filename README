@@ -1,10 +1,10 @@
-CSVParser (http://csvparser.sourceforge.net)
+CSVObjects (http://csvparser.sourceforge.net)
 =========
 
 1. Introduction
 
-CSV Parser is a Java library and framework for parsing the common 
-CSV (Comma Separated Value) files, and populating user defined Java
+CSVObjects (earlier known as CSVParser) is a Java library and framework 
+for parsing the common CSV (Comma Separated Value) files, and populating user defined Java
 Bean attributes from the CSV field values.
 
 The framework is based on declarative configuration of the mapping of
@@ -20,7 +20,7 @@ file LICENSE for details.
 2. Installation
 
 If you have downloaded the binary file release, then you need to include the
-csvparser-<release_number>.jar file in your project's library or classpath,
+CSVObjects-<release_number>.jar file in your project's library or classpath,
 ensure that the dependency libraries are also present in the classpath,
 and thats it!
 
@@ -71,6 +71,11 @@ In addition, the Javadoc API documentation is available at:
 	
 	You can also reach the developer via mail at anupamsg@users.sourceforge.net
  
+6. What happened to CSVParser?
+
+	It got renamed to CSVObjects. To get the whole story, see:
+	
+	https://sourceforge.net/docman/display_doc.php?docid=29419&group_id=143837
 -------------------
 
 Version: $Revision$
