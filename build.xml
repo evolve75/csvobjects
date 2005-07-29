@@ -253,7 +253,7 @@
 
         <javadoc defaultexcludes="yes"
                  destdir="${dir.doc}/api"
-                 access="protected"
+                 access="package"
                  author="true"
                  version="true"
                  use="true"

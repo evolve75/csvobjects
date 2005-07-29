@@ -99,9 +99,9 @@ public class CSVBeanMapping implements Iterable<CSVFieldMapping> {
     }
 
     /**
-     * Provides an interator over the
+     * Provides an iterator over the CSV field mappings present in this bean
+     * mapping.
      * 
-     * @link{CSVFieldMapping CSV field mappings} present in this bean mapping.
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<CSVFieldMapping> iterator() {
