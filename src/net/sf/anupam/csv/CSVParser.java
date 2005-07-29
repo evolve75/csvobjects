@@ -51,38 +51,45 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * {@link net.sf.anupam.csv.CSVParserFactory CSVParserFactory} factory should be
  * used for creation of instances.
  * </p>
- *
+ * 
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
+ * @see net.sf.anupam.csv.CSVParserFactory
  */
-public class CSVParser
-        implements Iterable<Object> {
+public class CSVParser implements Iterable<Object> {
 
     /** The logger to use. */
     protected static final Log LOG = LogFactory.getLog(CSVParser.class);
 
     /** The CSV Reader to use for this parser. */
-    private CSVReader          reader;
+    private CSVReader reader;
 
     /** The root bean mapping configuration for this parser. */
-    private CSVBeanMapping     rootBeanMapping;
+    private CSVBeanMapping rootBeanMapping;
 
     /**
-     * Constructor for CSVParser.
+     * Constructor for CSVParser. The constructor accepts the bean mapping to
+     * use as the starting CSV mapping configuration
+     * <em>(a.k.a the root bean mapping)</em> and the CSV reader/parser engine
+     * to use for actual parsing.
      * 
-     * @param beanMapping
-     *            the bean mapping to use
+     * @param rootBeanMapping
+     *            the bean mapping to use as the starting configuration
      * @param reader
-     *            the CSV Reader object
+     *            the CSV Reader object which will actually parse the CSV file
      */
-    public CSVParser(final CSVBeanMapping beanMapping, final CSVReader reader) {
+    public CSVParser(final CSVBeanMapping rootBeanMapping,
+            final CSVReader reader) {
         super();
-        this.rootBeanMapping = beanMapping;
+        this.rootBeanMapping = rootBeanMapping;
         this.reader = reader;
     }
 
     /**
+     * Dumps the root bean mapping configuration for this parser. This is meant
+     * for <strong>debugging</strong> only.
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -106,12 +113,8 @@ public class CSVParser
 
     /**
      * The iterator to provide the Iterable interface to the parser.
-     * 
-     * @author Anupam Sengupta
-     * @version $Revision$
      */
-    private class MappedObjectIterator
-            implements Iterator<Object> {
+    private class MappedObjectIterator implements Iterator<Object> {
 
         /** The actual line iterator to use. */
         private Iterator<List<String>> csvLineIter;
@@ -137,6 +140,8 @@ public class CSVParser
         }
 
         /**
+         * Indicates whether more parsed POJO beans exist.
+         * 
          * @see java.util.Iterator#hasNext()
          */
         public boolean hasNext() {
@@ -144,6 +149,10 @@ public class CSVParser
         }
 
         /**
+         * Returns the parsed and mapped POJO bean corresponding to the current
+         * CSV line. Each subsequent invocation will parse and return the next
+         * parsed POJO, until end of the CSV stream is reached.
+         * 
          * @see java.util.Iterator#next()
          */
         public Object next() {
@@ -218,17 +227,17 @@ public class CSVParser
                 return bean;
 
             } catch (final ClassNotFoundException e) {
-                LOG.warn("The Bean for class: "
-                        + beanMap.getClass() + " could not be instantiated", e);
+                LOG.warn("The Bean for class: " + beanMap.getClass()
+                        + " could not be instantiated", e);
                 return null;
 
             } catch (final IllegalAccessException e) {
-                LOG.warn("The Bean for class: "
-                        + beanMap.getClass() + " could not be instantiated", e);
+                LOG.warn("The Bean for class: " + beanMap.getClass()
+                        + " could not be instantiated", e);
                 return null;
             } catch (final InstantiationException e) {
-                LOG.warn("The Bean for class: "
-                        + beanMap.getClass() + " could not be instantiated", e);
+                LOG.warn("The Bean for class: " + beanMap.getClass()
+                        + " could not be instantiated", e);
                 return null;
             }
         }
@@ -255,6 +264,8 @@ public class CSVParser
     }
 
     /**
+     * Returns the iterator for retrieving the parsed POJO beans.
+     * 
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<Object> iterator() {
@@ -263,9 +274,12 @@ public class CSVParser
     }
 
     /**
-     * Returns value of the rootBeanMapping.
+     * Returns the root bean mapping. The root bean mapping is the bean mapping
+     * with which the Parser is configured. "Child" bean mappings (which are not
+     * directly accessible) are the bean mapping configurations which may be
+     * present as references from the root mapping.
      * 
-     * @return Returns the rootBeanMapping.
+     * @return Returns the root bean mapping.
      */
     protected CSVBeanMapping getRootBeanMapping() {
         return this.rootBeanMapping;

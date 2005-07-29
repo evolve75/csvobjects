@@ -30,7 +30,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  * A singleton factory which creates and caches the 
  * {@link CSVFieldFormatter csv field formatters}. The factory 
- * maintains a cache of CSV formatters that are reentrant.
+ * maintains a cache of CSV formatters that are reentrant (i.e., 
+ * the formatters that do not maintain any instance specific state).
  * 
  * @author Anupam Sengupta
  * @version $Revision$
@@ -40,8 +41,8 @@ import org.apache.commons.logging.LogFactory;
 public final class CSVFormatterFactory {
 
     /**
-     * The CSV formatter mapping file name. This file is present in the
-     * CSVParser jar.
+     * The CSV formatter mapping file name. This file assumed to be present in the
+     * classpath.
      */
     public static final String                  FMT_MAPPING_FILE_NAME = "net/sf/anupam/csv/formatters/csv-formatter-config.xml";
 
@@ -73,6 +74,7 @@ public final class CSVFormatterFactory {
     private Map<String, CSVFieldFormatter>      formatterCache;
 
     static {
+        // Initialize the singleton at startup.
         singleton = new CSVFormatterFactory();
         singleton.loadMappings();
         LOG.info("Created the CSVFormatter Factory");
@@ -89,7 +91,7 @@ public final class CSVFormatterFactory {
     }
 
     /**
-     * Returns the singleton instance.
+     * Returns the singleton instance of this factory.
      * 
      * @return the singleton instance
      */
@@ -98,7 +100,7 @@ public final class CSVFormatterFactory {
     }
 
     /**
-     * Loads all mappings.
+     * Loads all mappings from the formatter configuration file.
      */
     private void loadMappings() {
         final CSVFormatterConfigParser parser = new CSVFormatterConfigParser();

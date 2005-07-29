@@ -40,9 +40,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Singleton factory for instantiating the {@link CSVParser CSVParser} parser
- * objects. This factory uses the <code>csv-mapping.xml</code> mapping
- * configuration to create CSV parsers customized for the POJO bean to parse.
+ * Singleton factory for creating the {@link CSVParser CSVParser} parser objects
+ * for clients' of the framework. This factory uses the
+ * <code>csv-mapping.xml</code> mapping configuration to create CSV parsers
+ * customized for the POJO bean to parse. This is the first interface for
+ * clients of the framework.
  * 
  * @author Anupam Sengupta
  * @version $Revision$
@@ -52,23 +54,22 @@ import org.apache.commons.logging.LogFactory;
 public final class CSVParserFactory {
 
     /** The Mapping file name. */
-    public static final String          MAPPING_FILE_NAME = "csv-mapping.xml";
-
-    /** The singleton factory instance. */
-    private static CSVParserFactory     singleton;
+    public static final String MAPPING_FILE_NAME = "csv-mapping.xml";
 
     /** The logger to use. */
-    private static Log                  log               = LogFactory
-                                                                  .getLog(CSVParserFactory.class);
+    private static final Log LOG = LogFactory.getLog(CSVParserFactory.class);
 
-    /** The CSV to POJO mapping beans repository. */
+    /** The singleton factory instance. */
+    private static CSVParserFactory singleton;
+
+    /** The CSV to POJO mapping repository. */
     private Map<String, CSVBeanMapping> beanMappings;
 
     static {
+        // Create the singleton at startup.
         singleton = new CSVParserFactory();
         singleton.loadMappings();
-        log.info("Created the Singleton for: "
-                + CSVParserFactory.class);
+        LOG.info("Created the Singleton for: " + CSVParserFactory.class);
     }
 
     /**
@@ -80,7 +81,7 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Return the singleton instance of the factory.
+     * Returns the singleton instance of this factory.
      * 
      * @return the parser factory
      */
@@ -89,7 +90,7 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Creates a new CSV parser and loads the bean mapping configuration.
+     * Loads the bean mapping configuration from the XML mapping file.
      */
     private void loadMappings() {
         final CSVMappingParser parser = new CSVMappingParser();
@@ -103,12 +104,12 @@ public final class CSVParserFactory {
                 resolveBeanReferencesFor(currentFieldMapping);
             }
         }
-        log.debug("Loaded the CSV Mapping configuration from "
+        LOG.debug("Loaded the CSV Mapping configuration from "
                 + MAPPING_FILE_NAME);
     }
 
     /**
-     * Creates any necessary field formatters.
+     * Creates any necessary field formatters for the specified field mapping.
      * 
      * @param fieldMapping
      *            the field for which formatters should be created
@@ -124,7 +125,8 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Resolve bean references for the specified field.
+     * Resolves bean references for the specified field, and sets the bean
+     * mapping hierarchy accordingly.
      * 
      * @param fieldMapping
      *            the field for which references need to be resolved
@@ -138,8 +140,8 @@ public final class CSVParserFactory {
             if (referencedBean != null) {
                 fieldMapping.setBeanReference(referencedBean);
             } else {
-                log.warn("For field "
-                        + fieldMapping + " the referenced bean does not exist");
+                LOG.warn("For field " + fieldMapping
+                        + " the referenced bean does not exist");
                 fieldMapping.setBeanReferenceName("none");
             }
         }
@@ -147,10 +149,10 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Returns the requested bean mapping.
+     * Returns the requested bean mapping configuration.
      * 
      * @param beanName
-     *            the mapping to return
+     *            the POJO bean for which the mapping is to be returned
      * @return the CSV bean mapping, or <code>null</code> if not found
      */
     public CSVBeanMapping getBeanMapping(final String beanName) {
@@ -158,12 +160,13 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Returns a new CSV file parser.
+     * Returns a new CSV file parser for the specified mapping, and the
+     * specified CSV file.
      * 
      * @param mappingName
-     *            the CSV mapping to use
+     *            the CSV mapping to for which the parser should be created
      * @param csvFileName
-     *            the CSV file to parse
+     *            the CSV file to be parsed
      * @param inClassPath
      *            indicates whether the CSV file is in the classpath
      * @param csvHasHeader
@@ -171,13 +174,14 @@ public final class CSVParserFactory {
      * @return the CSV Parser, or <code>null</code> if not found
      * @exception FileNotFoundException
      *                thrown if the specified CSV file cannot be found
+     * @see #getCSVParser(String, java.io.Reader, boolean)
      */
     public CSVParser getCSVParser(final String mappingName,
             final String csvFileName, final boolean inClassPath,
             final boolean csvHasHeader) throws FileNotFoundException {
 
         if (StringUtils.isEmpty(csvFileName)) {
-            log.warn("The specified CSV Filename is empty");
+            LOG.warn("The specified CSV Filename is empty");
             throw new IllegalArgumentException("File Name is empty");
         }
 
@@ -196,10 +200,10 @@ public final class CSVParserFactory {
                 reader = new FileReader(csvFileName);
 
             }
-            log.debug("Successfully read the CSV file");
+            LOG.debug("Successfully read the CSV file");
         } catch (final FileNotFoundException e) {
-            log.warn("The specified CSV File: "
-                    + csvFileName + " was not found", e);
+            LOG.warn("The specified CSV File: " + csvFileName
+                    + " was not found", e);
             throw e;
         }
 
@@ -207,15 +211,17 @@ public final class CSVParserFactory {
     }
 
     /**
-     * Returns a new CSV file parser.
+     * Returns a new CSV file parser for the specified mapping and the specified
+     * CSV reader stream.
      * 
      * @param mappingName
-     *            the CSV mapping to use
+     *            the CSV mapping for which the parser should be returned
      * @param csvReader
      *            the CSV stream to parse
      * @param csvHasHeader
      *            indicates whether the CSV file has a header row
      * @return the CSV Parser, or <code>null</code> if not found
+     * @see #getCSVParser(String, String, boolean, boolean)
      */
     public CSVParser getCSVParser(final String mappingName,
             final Reader csvReader, final boolean csvHasHeader) {
@@ -223,13 +229,13 @@ public final class CSVParserFactory {
         final CSVBeanMapping beanMapping = getBeanMapping(mappingName);
 
         if (beanMapping == null) {
-            log.warn("Specified bean mapping was not found");
+            LOG.warn("Specified bean mapping was not found");
             throw new IllegalArgumentException(
                     "Specified bean mapping was not found");
         }
 
         if (csvReader == null) {
-            log.warn("Specified CSV IO Reader was null");
+            LOG.warn("Specified CSV IO Reader was null");
             throw new IllegalArgumentException(
                     "Specified CSV IO Reader was null");
         }

@@ -1,5 +1,5 @@
 /*
- * FirstWordFormatter.java
+ * TrimWordFormatter.java
  * 
  * Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
  * 
@@ -24,23 +24,22 @@ package net.sf.anupam.csv.formatters;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * A {@link CSVFieldFormatter formatter} that returns the first word
- * of the specified CSV value. This is useful in situations such as 
- * extracting the first name.
+ * A {@link CSVFieldFormatter formatter} that returns the trimmed
+ * CSV value. This is useful in situaations when the CSV field is
+ * known to have leading or trailing white-space.
  * 
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
- * @see LastWordFormatter
- * @csv.formatter-mapping name="firstWord"
+ * @csv.formatter-mapping name="trimWord"
  */
-final class FirstWordFormatter
+final class TrimWordFormatter
         implements CSVFieldFormatter {
 
     /**
      * Constructor for FirstWordFormatter.
      */
-    public FirstWordFormatter() {
+    public TrimWordFormatter() {
         super();
     }
 
@@ -52,7 +51,7 @@ final class FirstWordFormatter
         if (value == null) {
             return null;
         }
-        return StringUtils.trim(value.split(" ")[0]);
+        return StringUtils.trim(value);
     }
 
 }

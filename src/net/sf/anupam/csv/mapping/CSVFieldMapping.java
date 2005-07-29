@@ -29,37 +29,36 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * Represents a single CSV field to Java Bean attribute mapping. 
- * The mapping can be for basic data types, or point to other
- * referenced CSV bean mappings for representing nested beans.
+ * Represents a single CSV field to Java Bean attribute mapping. The mapping can
+ * be for basic data types, or point to other referenced CSV bean mappings for
+ * representing nested beans.
  * 
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
  * @see CSVBeanMapping
  */
-public class CSVFieldMapping
-        implements Comparable<CSVFieldMapping> {
+public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
-     * Name of CSV field being mapped.
+     * user defined name of CSV field being mapped.
      */
-    private String            fieldName;
+    private String fieldName;
 
     /**
      * Fully qualified class name of the field being mapped.
      */
-    private String            fieldType;
+    private String fieldType;
 
     /**
      * The CSV field position (starting at 0).
      */
-    private int               fieldPosition;
+    private int fieldPosition;
 
     /**
      * Name of the bean's attribute.
      */
-    private String            attributeName;
+    private String attributeName;
 
     /**
      * The CSV field formatter to use for this field.
@@ -69,18 +68,18 @@ public class CSVFieldMapping
     /**
      * Declarative name of the CSV field formatter to use.
      */
-    private String            reformatterName;
+    private String reformatterName;
 
     /**
      * Declarative bean name of the being being referenced by this field
      * mapping.
      */
-    private String            beanReferenceName;
+    private String beanReferenceName;
 
     /**
      * The CSV bean mapping referenced by this field mapping.
      */
-    private CSVBeanMapping    beanReference;
+    private CSVBeanMapping beanReference;
 
     /**
      * Constructor for CSVFieldMapping.
@@ -115,6 +114,9 @@ public class CSVFieldMapping
     }
 
     /**
+     * Dumps the contents of this field mapping as a string. This is meant for
+     * <strong>debugging</strong> only.
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -125,13 +127,13 @@ public class CSVFieldMapping
                         fieldPosition).append("attributeName", attributeName)
                 .append("reformatterName", reformatterName);
 
-        strBuilder.append("FormatterClass", (formatter != null
-                ? formatter.getClass()
-                : "None"));
+        strBuilder.append("FormatterClass", (formatter != null ? formatter
+                .getClass() : "None"));
         strBuilder.append("beanReferenceName", beanReferenceName);
-        strBuilder.append("Bean Reference Class", (beanReference != null)
-                ? beanReference.getBeanClass()
-                : "None");
+        strBuilder
+                .append("Bean Reference Class",
+                        (beanReference != null) ? beanReference.getBeanClass()
+                                : "None");
         return strBuilder.toString();
     }
 
@@ -142,160 +144,166 @@ public class CSVFieldMapping
         if (this.equals(other)) {
             return 0;
         } else {
-            return (this.getFieldPosition() < other.getFieldPosition())
-                    ? -1
+            return (this.getFieldPosition() < other.getFieldPosition()) ? -1
                     : +1;
         }
 
     }
 
     /**
-     * Returns value of the attributeName.
+     * Returns the mapped POJO bean's attribute name corresponding to this field.
      * 
-     * @return Returns the attributeName.
+     * @return Returns the mapped POJO attribute name
      */
     public String getAttributeName() {
         return this.attributeName;
     }
 
     /**
-     * Sets value of the attributeName.
+     * Sets the mapped POJO's attribute name corresponding to this field. The name has to <strong>exactly</strong>
+     * match the attribute name (including the case).
      * 
      * @param attributeName
-     *            The attributeName to set.
+     *            The mapped POJO' attribute name
      */
     public void setAttributeName(final String attributeName) {
         this.attributeName = StringUtils.trim(attributeName);
     }
 
     /**
-     * Returns value of the fieldName.
+     * Returns the user defined name of this field.
      * 
-     * @return Returns the fieldName.
+     * @return Returns the name of this field.
      */
     public String getFieldName() {
         return this.fieldName;
     }
 
     /**
-     * Sets value of the fieldName.
+     * Sets the user defined name of this field. This need not be same
+     * as the CSV field name (if defined on the CSV header row).
      * 
      * @param fieldName
-     *            The fieldName to set.
+     *            The name of this field
      */
     public void setFieldName(final String fieldName) {
         this.fieldName = StringUtils.trim(fieldName);
     }
 
     /**
-     * Returns value of the fieldPosition.
+     * Returns this field's position in the CSV line. Field positions
+     * start at 0.
      * 
-     * @return Returns the fieldPosition.
+     * @return Returns the field's position
      */
     public int getFieldPosition() {
         return this.fieldPosition;
     }
 
     /**
-     * Sets value of the fieldPosition.
+     * Sets this field's position in the CSV line. Field positions start 
+     * at 0.
      * 
      * @param fieldPosition
-     *            The fieldPosition to set.
+     *            The field's position in the CSV line
      */
     public void setFieldPosition(final int fieldPosition) {
         this.fieldPosition = fieldPosition;
     }
 
     /**
-     * Returns value of the fieldType.
+     * Returns the fully qualified Java type name of this field.
      * 
-     * @return Returns the fieldType.
+     * @return Returns the Java type name of this field
      */
     public String getFieldType() {
         return this.fieldType;
     }
 
     /**
-     * Sets value of the fieldType.
+     * Sets the fully qualified Java type name of this field.
      * 
      * @param fieldType
-     *            The fieldType to set.
+     *            The Java type name of this field
      */
     public void setFieldType(final String fieldType) {
         this.fieldType = StringUtils.trim(fieldType);
     }
 
     /**
-     * Returns value of the formatter.
+     * Returns the CSV formatter attached to this field.
      * 
-     * @return Returns the formatter.
+     * @return Returns the formatter
      */
     public CSVFieldFormatter getFormatter() {
         return this.formatter;
     }
 
     /**
-     * Sets value of the formatter.
+     * Sets the formatter attached to this field.
      * 
      * @param formatter
-     *            The formatter to set.
+     *            The formatter to set
      */
     public void setFormatter(final CSVFieldFormatter formatter) {
         this.formatter = formatter;
     }
 
     /**
-     * Returns value of the reformatterName.
+     * Returns the declarative name of the formatter attached to this field.
      * 
-     * @return Returns the reformatterName.
+     * @return Returns the declarative formatter name
      */
     public String getReformatterName() {
         return this.reformatterName;
     }
 
     /**
-     * Sets value of the reformatterName.
+     * Sets the declarative name of the formatter attached to this field.
      * 
      * @param reformatterName
-     *            The reformatterName to set.
+     *            The declarative formatter name to set
      */
     public void setReformatterName(final String reformatterName) {
         this.reformatterName = reformatterName;
     }
 
     /**
-     * Returns value of the bean Reference name.
+     * Returns the declarative name of the referenced bean mapping for this field, or
+     * <code>null</code> if no bean mapping if referenced by this field.
      * 
-     * @return Returns the beanReference.
+     * @return Returns name of the referenced bean mapping
      */
     public String getBeanReferenceName() {
         return this.beanReferenceName;
     }
 
     /**
-     * Sets value of the beanReference name.
+     * Sets the declarative name of a referenced bean mapping for this
+     * field.
      * 
      * @param beanReferenceName
-     *            The beanReference to set.
+     *            The declarative name of the referenced bean
      */
     public void setBeanReferenceName(final String beanReferenceName) {
         this.beanReferenceName = beanReferenceName;
     }
 
     /**
-     * Sets value of the beanReference.
+     * Sets the referenced bean mapping for this field.
      * 
      * @param beanReference
-     *            The beanReference to set.
+     *            The bean mapping reference to set
      */
     public void setBeanReference(final CSVBeanMapping beanReference) {
         this.beanReference = beanReference;
     }
 
     /**
-     * Returns value of the beanReference.
+     * Returns the referenced bean mapping, if one is present. Returns
+     * <code>null</code> if this field does not have any bean reference.
      * 
-     * @return Returns the beanReference.
+     * @return Returns the bean mapping reference
      */
     public CSVBeanMapping getBeanReference() {
         return this.beanReference;

@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 
 /**
  * XML Parser (based on Commons Digester) to parse and return the CSV formatter
- * configuration.
+ * configuration. This is for internal use within the framwork.
  * 
  * @author Anupam Sengupta
  * @version $Revision$

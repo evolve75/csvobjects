@@ -37,11 +37,12 @@ import com.Ostermiller.util.ExcelCSVParser;
 
 /**
  * Reads a CSV file and parses the individual fields for each CSV record in the
- * file. The default delimiter is assumed to be <code>,</code> (comma).
+ * file. The default delimiter is assumed to be the <code>,</code> (comma).
  * 
  * <p>
- * The class uses the CSV Parser engines from 
- *  <a href="http://ostermiller.org/utils/">Steven Ostermiller's site</a>.
+ * The class uses the CSV Parser engines from <a
+ * href="http://ostermiller.org/utils/" target="_blank">Steven Ostermiller's
+ * site</a>.
  * </p>
  * 
  * @author Anupam Sengupta
@@ -49,10 +50,7 @@ import com.Ostermiller.util.ExcelCSVParser;
  * @since 1.5
  * @see com.Ostermiller.util.CSVParse
  */
-class CSVReader
-        implements Iterable<List<String>> {
-    // ~ Instance fields
-    // --------------------------------------------------------
+class CSVReader implements Iterable<List<String>> {
 
     /**
      * Logger to use.
@@ -62,23 +60,22 @@ class CSVReader
     /**
      * The CSV parser engine.
      */
-    private CSVParse           parser;
+    private CSVParse parser;
 
     /**
      * Flag which indicates whether the reader has read all the records.
      */
-    private boolean            readingComplete;
+    private boolean readingComplete;
 
     /**
      * Flag which indicates whether the CSV file has a header row.
      */
-    private boolean            headerPresent;
-
-    // ~ Constructors
-    // -----------------------------------------------------------
+    private boolean headerPresent;
 
     /**
-     * Constructor which accepts a reader on the CSV stream to parse.
+     * Constructor which accepts a reader on the CSV stream to parse. The
+     * presence of a CSV header row is also specified. If present, the header
+     * row will be skipped.
      * 
      * @param csvReader
      *            the CSV stream reader from which to parse
@@ -92,9 +89,6 @@ class CSVReader
         parser = new ExcelCSVParser(csvReader);
 
     }
-
-    // ~ Methods
-    // ----------------------------------------------------------------
 
     /**
      * Releases all system resources.
@@ -122,7 +116,8 @@ class CSVReader
     }
 
     /**
-     * Returns an iterator over the parsed lines.
+     * Returns an iterator over the parsed lines. The iterator returns a list of
+     * the CSV field values as a single value over each iteration.
      * 
      * @return an iterator over the lines.
      */
@@ -134,22 +129,21 @@ class CSVReader
     // ----------------------------------------------------------
 
     /**
-     * Inner iterator class to provide the Iterable interface.
+     * Inner iterator class to provide the Iterable interface to the reader.
      */
-    private class LineIterator
-            implements Iterator<List<String>> {
+    private class LineIterator implements Iterator<List<String>> {
         // ~ Methods
         // ------------------------------------------------------------
 
         /**
          * The parsed CSV field values.
          */
-        private String [] parsedValues;
+        private String[] parsedValues;
 
         /**
          * Flag indicating whether the previous line was read.
          */
-        private boolean   haveReadPreviousLine;
+        private boolean haveReadPreviousLine;
 
         /**
          * Default Constructor.
@@ -177,6 +171,8 @@ class CSVReader
         }
 
         /**
+         * Returns a list of the CSV field values for the current line.
+         * 
          * @see java.util.Iterator#next()
          */
         public List<String> next() {
@@ -200,7 +196,7 @@ class CSVReader
         }
 
         /**
-         * Read one CSV line using the CSV parser engine and store the parsed
+         * Reads one CSV line using the CSV parser engine and stores the parsed
          * line fields.
          */
         private void readOneLine() {
@@ -217,6 +213,8 @@ class CSVReader
         }
 
         /**
+         * This method is not supported.
+         * 
          * @see java.util.Iterator#remove()
          */
         public void remove() {
@@ -228,37 +226,37 @@ class CSVReader
     }
 
     /**
-     * Returns value of the headerPresent.
+     * Indicates whether the header row is present or not.
      * 
-     * @return Returns the headerPresent.
+     * @return Returns <code>true</code> if the header row is present
      */
     public boolean isHeaderPresent() {
         return this.headerPresent;
     }
 
     /**
-     * Returns value of the readingComplete.
+     * Indicates whether the reader has read all CSV lines.
      * 
-     * @return Returns the readingComplete.
+     * @return Returns <code>true</code> if all CSV lines have been read
      */
     public boolean isReadingComplete() {
         return this.readingComplete;
     }
 
     /**
-     * Sets value of the readingComplete.
+     * Sets the flag to denote that all lines have been read.
      * 
      * @param readingComplete
-     *            The readingComplete to set.
+     *            The flag value to set
      */
     protected void setReadingComplete(final boolean readingComplete) {
         this.readingComplete = readingComplete;
     }
 
     /**
-     * Returns value of the parser.
+     * Returns the internal CSV parser engine instance for this reader.
      * 
-     * @return Returns the parser.
+     * @return Returns the parser instance
      */
     protected CSVParse getParser() {
         return this.parser;

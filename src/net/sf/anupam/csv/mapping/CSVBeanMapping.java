@@ -29,33 +29,39 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Represents the CSV to Java Bean mapping of a single Java bean.
- * Instances of this class store the bean name, the fully qualified 
- * class name, CSV header indicator, as well as individual CSV field
- * mappings. 
+ * Represents the CSV to Java Bean mapping for a single Java bean. Instances of
+ * this class store the bean name, the fully qualified class name, CSV header
+ * indicator, as well as individual CSV field mappings.
+ * 
+ * <p>
+ * The bean name (which is user defined) acts as the name of the mapping as
+ * well, and is used for looking up or accessing the specific
+ * 
+ * @link{net.sf.anupam.csv.CSVParser parsers} for this mapping.
+ *                                   </p>
  * 
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
  * @see CSVFieldMapping
  */
-public class CSVBeanMapping
-        implements Iterable<CSVFieldMapping> {
+public class CSVBeanMapping implements Iterable<CSVFieldMapping> {
 
     /**
-     * Name of the Java bean being mapped.
+     * Name of the Java bean being mapped. This is a user defined name, and need
+     * not be same as the bean's class name.
      */
-    private String                     beanName;
+    private String beanName;
 
     /**
      * Fully qualified class name of the Java bean being mapped.
      */
-    private String                     beanClass;
+    private String beanClass;
 
     /**
      * Indicates whether the source CSV has a header row.
      */
-    private boolean                    csvHeaderPresent;
+    private boolean csvHeaderPresent;
 
     /**
      * List of mapped CSV fields for this bean mapping.
@@ -65,7 +71,7 @@ public class CSVBeanMapping
     /**
      * The highest field position number.
      */
-    private int                        maxFieldPosition;
+    private int maxFieldPosition;
 
     /**
      * Constructor for CSVBeanMapping.
@@ -76,6 +82,9 @@ public class CSVBeanMapping
     }
 
     /**
+     * Dumps content of the bean mapping. This is meant for <strong>debugging</strong>
+     * only.
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -90,6 +99,9 @@ public class CSVBeanMapping
     }
 
     /**
+     * Provides an interator over the
+     * 
+     * @link{CSVFieldMapping CSV field mappings} present in this bean mapping.
      * @see java.lang.Iterable#iterator()
      */
     public Iterator<CSVFieldMapping> iterator() {
@@ -97,38 +109,38 @@ public class CSVBeanMapping
     }
 
     /**
-     * Returns value of the beanClass.
+     * Returns the mapped bean's fully qualified class name.
      * 
-     * @return Returns the beanClass.
+     * @return Returns the mapped bean's class name
      */
     public String getBeanClass() {
         return this.beanClass;
     }
 
     /**
-     * Sets value of the beanClass.
+     * Sets the mapped bean's fully qualified class name.
      * 
      * @param beanClass
-     *            The beanClass to set.
+     *            The mapped bean's class name
      */
     public void setBeanClass(final String beanClass) {
         this.beanClass = StringUtils.trim(beanClass);
     }
 
     /**
-     * Returns value of the beanName.
+     * Returns the user defined name of the mapped bean.
      * 
-     * @return Returns the beanName.
+     * @return Returns the mapped bean's name
      */
     public String getBeanName() {
         return this.beanName;
     }
 
     /**
-     * Sets value of the beanName.
+     * Sets the mapped bean's user defined name.
      * 
      * @param beanName
-     *            The beanName to set.
+     *            The mapped bean's user defined name
      */
     public void setBeanName(final String beanName) {
         this.beanName = StringUtils.trim(beanName);
@@ -147,28 +159,31 @@ public class CSVBeanMapping
     }
 
     /**
-     * Returns value of the maxFieldPosition.
+     * Returns the maximum (i.e. highest) field position present in this bean
+     * mapping. All field positions start from zero.
      * 
-     * @return Returns the maxFieldPosition.
+     * @return Returns the highest field position
      */
     public int getMaxFieldPosition() {
         return this.maxFieldPosition;
     }
 
     /**
-     * Returns value of the csvHeaderPresent.
+     * Indicates whether a header row is present in the CSV mapping.
      * 
-     * @return Returns the csvHeaderPresent.
+     * @return Returns <code>true</code> if the mapped CSV file or stream has
+     *         a header
      */
     public boolean isCsvHeaderPresent() {
         return this.csvHeaderPresent;
     }
 
     /**
-     * Sets value of the csvHeaderPresent.
+     * Sets the flag which indicates whether a header row is present in the
+     * mapped CSV file or stream.
      * 
      * @param csvHeaderPresent
-     *            The csvHeaderPresent to set.
+     *            The flag value to set
      */
     public void setCsvHeaderPresent(final boolean csvHeaderPresent) {
         this.csvHeaderPresent = csvHeaderPresent;

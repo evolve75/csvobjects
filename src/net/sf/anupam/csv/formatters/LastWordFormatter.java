@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link CSVFieldFormatter formatter} that returns the last word
- * of the specified CSV value. This is useful in situtations such as 
+ * of the specified CSV value. This is useful in situations such as 
  * extracting the last name.
  * 
  * @author Anupam Sengupta
