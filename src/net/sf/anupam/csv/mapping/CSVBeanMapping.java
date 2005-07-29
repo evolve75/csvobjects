@@ -36,9 +36,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * <p>
  * The bean name (which is user defined) acts as the name of the mapping as
  * well, and is used for looking up or accessing the specific
- * 
- * @link{net.sf.anupam.csv.CSVParser parsers} for this mapping.
- *                                   </p>
+ * {@link net.sf.anupam.csv.CSVParser parsers} for this mapping.
+ * </p>
  * 
  * @author Anupam Sengupta
  * @version $Revision$
