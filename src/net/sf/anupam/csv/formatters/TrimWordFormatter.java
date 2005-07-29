@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link CSVFieldFormatter formatter} that returns the trimmed
- * CSV value. This is useful in situaations when the CSV field is
+ * CSV value. This is useful in situations when the CSV field is
  * known to have leading or trailing white-space.
  * 
  * @author Anupam Sengupta
