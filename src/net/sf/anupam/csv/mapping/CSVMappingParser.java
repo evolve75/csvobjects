@@ -21,6 +21,13 @@
  */
 package net.sf.anupam.csv.mapping;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.xmlrules.FromXmlRuleSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,29 +38,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.xmlrules.FromXmlRuleSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 /**
  * XML Parser (based on Commons Digester) to parse and return the mapping
  * configuration.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
  * @see org.apache.commons.digester.Digester
+ * @since 1.5
  */
 public class CSVMappingParser {
 
     /**
      * The logger to use.
      */
-    private static final Log      LOG      = LogFactory
-                                                   .getLog(CSVMappingParser.class);
+    private static final Log LOG = LogFactory
+            .getLog(CSVMappingParser.class);
 
     /**
      * The digester rule set for parsing the mapping file.
@@ -63,7 +63,7 @@ public class CSVMappingParser {
     /**
      * The digester to use for parsing the mapping file.
      */
-    private Digester              digester = new Digester();
+    private Digester digester = new Digester();
 
     static {
 
@@ -93,7 +93,10 @@ public class CSVMappingParser {
     }
 
     /**
-     * @see java.lang.Object#finalize()
+     * Finalizes this mapping parser.
+     *
+     * @throws Throwable thrown if the finalization fails
+     * @see Object#finalize()
      */
     @Override
     protected void finalize() throws Throwable {
@@ -106,16 +109,14 @@ public class CSVMappingParser {
 
     /**
      * Returns the map of parsed mapping configuration beans.
-     * 
-     * @param xmlFileName
-     *            the XML mapping configuration file
-     * @param inClassPath
-     *            flag indicating whether the XML file is in the classpath
+     *
+     * @param xmlFileName the XML mapping configuration file
+     * @param inClassPath flag indicating whether the XML file is in the classpath
      * @return a map of CSV bean mappings. An empty map is returned if an error
      *         occurs
      */
     public Map<String, CSVBeanMapping> getMappings(final String xmlFileName,
-            final boolean inClassPath) {
+                                                   final boolean inClassPath) {
 
         final Map<String, CSVBeanMapping> beanMap = new WeakHashMap<String, CSVBeanMapping>();
 

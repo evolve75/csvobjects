@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Sample bean to represent an employee.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  * @csv.bean-mapping bean-name="employeeBean" csv-header="true"
@@ -41,27 +41,27 @@ public class Employee
     /**
      * Employee ID.
      */
-    private String      employeeID;
+    private String employeeID;
 
     /**
      * First name of the employee.
      */
-    private String      firstName;
+    private String firstName;
 
     /**
      * Last name of the employee.
      */
-    private String      lastName;
+    private String lastName;
 
     /**
      * The client supplied identifier.
      */
-    private String      clientSuppliedID;
+    private String clientSuppliedID;
 
     /**
      * An alternate client supplied identifier.
      */
-    private String      clientSuppliedSecondaryID;
+    private String clientSuppliedSecondaryID;
 
     /**
      * the designation of this employee.
@@ -77,7 +77,7 @@ public class Employee
 
     /**
      * Returns value of the clientSuppliedID.
-     * 
+     *
      * @return Returns the clientSuppliedID.
      * @csv.field-mapping field-name="MyTimeID" position="8"
      */
@@ -87,9 +87,8 @@ public class Employee
 
     /**
      * Sets value of the clientSuppliedID.
-     * 
-     * @param clientSuppliedID
-     *            The clientSuppliedID to set.
+     *
+     * @param clientSuppliedID The clientSuppliedID to set.
      */
     public void setClientSuppliedID(final String clientSuppliedID) {
         this.clientSuppliedID = clientSuppliedID;
@@ -97,7 +96,7 @@ public class Employee
 
     /**
      * Returns value of the clientSuppliedSecondaryID.
-     * 
+     *
      * @return Returns the clientSuppliedSecondaryID.
      * @csv.field-mapping field-name="contractorID" position="7"
      */
@@ -107,9 +106,8 @@ public class Employee
 
     /**
      * Sets value of the clientSuppliedSecondaryID.
-     * 
-     * @param clientSuppliedSecondaryID
-     *            The clientSuppliedSecondaryID to set.
+     *
+     * @param clientSuppliedSecondaryID The clientSuppliedSecondaryID to set.
      */
     public void setClientSuppliedSecondaryID(
             final String clientSuppliedSecondaryID) {
@@ -118,9 +116,8 @@ public class Employee
 
     /**
      * Sets the employee ID.
-     * 
-     * @param employeeID
-     *            The employeeID to set.
+     *
+     * @param employeeID The employeeID to set.
      */
     public void setEmployeeID(final String employeeID) {
         this.employeeID = employeeID;
@@ -128,7 +125,7 @@ public class Employee
 
     /**
      * Return the employee ID.
-     * 
+     *
      * @return Returns the employeeID.
      * @csv.field-mapping position="1"
      */
@@ -138,9 +135,8 @@ public class Employee
 
     /**
      * Set the first name.
-     * 
-     * @param firstName
-     *            The firstName to set.
+     *
+     * @param firstName The firstName to set.
      */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
@@ -148,7 +144,7 @@ public class Employee
 
     /**
      * Returns the first name.
-     * 
+     *
      * @return Returns the firstName.
      * @csv.field-mapping position="2" reformat="firstWord"
      */
@@ -158,9 +154,8 @@ public class Employee
 
     /**
      * Sets the last name.
-     * 
-     * @param lastName
-     *            The lastName to set.
+     *
+     * @param lastName The lastName to set.
      */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
@@ -168,7 +163,7 @@ public class Employee
 
     /**
      * Returns the last name.
-     * 
+     *
      * @return Returns the lastName.
      * @csv.field-mapping position="2" reformat="lastWord"
      */
@@ -177,7 +172,13 @@ public class Employee
     }
 
     /**
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * Compares this employee against another employee for ordering purposes. The comparision
+     * is based on the employee ID.
+     *
+     * @param other the other employee to compare against
+     * @return <code>0</code> if the two employee are equal, <code>-1</code> if this employee ID
+     *         is lower, <code>+1</code> if this employee ID is higher
+     * @see Comparable#compareTo(Object)
      */
     public int compareTo(final Employee other) {
 
@@ -186,7 +187,12 @@ public class Employee
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Compares this employee against another for equality. The comparision is based on the
+     * employee ID.
+     *
+     * @param other the other employee to compare against
+     * @return <code>true</code> if equal, <code>false</code> otherwise
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals(final Object other) {
@@ -205,7 +211,10 @@ public class Employee
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * Returns the hashcode for this employee. The hash code is based on the employee ID.
+     *
+     * @return the hash code
+     * @see Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -213,20 +222,24 @@ public class Employee
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * Returns a string representation of this employee for <code>debugging</code> purposes
+     * only.
+     *
+     * @return the string representation
+     * @see Object#toString()
      */
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("employeeID", employeeID)
                 .append("firstName", firstName).append("lastName", lastName)
                 .append("clientSuppliedID", clientSuppliedID).append(
-                        "clientSuppliedSecondayID", clientSuppliedSecondaryID)
+                "clientSuppliedSecondayID", clientSuppliedSecondaryID)
                 .append("designation", designation).toString();
     }
 
     /**
      * Returns value of the designation.
-     * 
+     *
      * @return Returns the designation.
      * @csv.field-mapping position="3" bean-ref="designationBean"
      */
@@ -236,9 +249,8 @@ public class Employee
 
     /**
      * Sets value of the designation.
-     * 
-     * @param designation
-     *            The designation to set.
+     *
+     * @param designation The designation to set.
      */
     public void setDesignation(final Designation designation) {
         this.designation = designation;

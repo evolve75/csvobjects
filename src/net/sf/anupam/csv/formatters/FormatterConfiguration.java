@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * FormatConfiguration.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
@@ -39,12 +39,12 @@ public class FormatterConfiguration
     /**
      * Name of this formatter.
      */
-    private String  formatterName;
+    private String formatterName;
 
     /**
      * Fully qualified class name of the formatter.
      */
-    private String  formatterClass;
+    private String formatterClass;
 
     /**
      * Whether special formatter construction is to be performed by the factory
@@ -60,27 +60,41 @@ public class FormatterConfiguration
     }
 
     /**
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * Compares this formatter configuration to another configuration for ordering purposes.
+     * The comparision is based on the formatter name.
+     *
+     * @param other the other configuration to compare against
+     * @return <code>0</code> if the two configurations are equal, <code>-1</code> if
+     *         this configuration ranks "lower", <code>+1</code> if this configuration ranks "higher"
+     * @see Comparable#compareTo(Object)
      */
     public int compareTo(final FormatterConfiguration other) {
 
         return new CompareToBuilder()
                 .append(formatterName, other.formatterName).append(
-                        formatterClass, other.formatterClass).toComparison();
+                formatterClass, other.formatterClass).toComparison();
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * Returns a string representation of this formatter configuration for
+     * <strong>debugging</strong> purposes only.
+     *
+     * @return a string representation of this formatter configuration
+     * @see Object#toString()
      */
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("formatterName", formatterName)
                 .append("formatterClass", formatterClass).append(
-                        "constructionNeeded", constructionNeeded).toString();
+                "constructionNeeded", constructionNeeded).toString();
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * Computes the hash code for this formatter configuration. The has code is based on the
+     * formatter configuration's name.
+     *
+     * @return the hash code
+     * @see Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -89,7 +103,12 @@ public class FormatterConfiguration
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Compares this formatter configuration to another configuration for equality. Equality
+     * test is based on the formatter configuration name.
+     *
+     * @param other the other configuration to compare to
+     * @return <code>true</code> if the configurations are equal, <code>false</code> other wise
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals(final Object other) {
@@ -108,7 +127,7 @@ public class FormatterConfiguration
 
     /**
      * Returns value of the formatName.
-     * 
+     *
      * @return Returns the formatName.
      */
     public String getFormatterName() {
@@ -117,9 +136,8 @@ public class FormatterConfiguration
 
     /**
      * Sets value of the formatName.
-     * 
-     * @param formatName
-     *            The formatName to set.
+     *
+     * @param formatName The formatName to set.
      */
     public void setFormatterName(final String formatName) {
         this.formatterName = formatName;
@@ -127,7 +145,7 @@ public class FormatterConfiguration
 
     /**
      * Returns value of the formatterClass.
-     * 
+     *
      * @return Returns the formatterClass.
      */
     public String getFormatterClass() {
@@ -136,9 +154,8 @@ public class FormatterConfiguration
 
     /**
      * Sets value of the formatterClass.
-     * 
-     * @param formatterClass
-     *            The formatterClass to set.
+     *
+     * @param formatterClass The formatterClass to set.
      */
     public void setFormatterClass(final String formatterClass) {
         this.formatterClass = formatterClass;
@@ -146,7 +163,7 @@ public class FormatterConfiguration
 
     /**
      * Returns value of the constructionNeeded.
-     * 
+     *
      * @return Returns the constructionNeeded.
      */
     public boolean isConstructionNeeded() {
@@ -155,9 +172,8 @@ public class FormatterConfiguration
 
     /**
      * Sets value of the constructionNeeded.
-     * 
-     * @param constructionNeeded
-     *            The constructionNeeded to set.
+     *
+     * @param constructionNeeded The constructionNeeded to set.
      */
     public void setConstructionNeeded(final boolean constructionNeeded) {
         this.constructionNeeded = constructionNeeded;

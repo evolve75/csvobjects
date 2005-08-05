@@ -25,14 +25,14 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link CSVFieldFormatter formatter} that returns the last word
- * of the specified CSV value. This is useful in situations such as 
+ * of the specified CSV value. This is useful in situations such as
  * extracting the last name.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
- * @see FirstWordFormatter
  * @csv.formatter-mapping name="lastWord"
+ * @see FirstWordFormatter
+ * @since 1.5
  */
 final class LastWordFormatter
         implements CSVFieldFormatter {
@@ -45,7 +45,11 @@ final class LastWordFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(java.lang.String)
+     * Formats the value and returns the last word.
+     *
+     * @param value the value to be transformed
+     * @return the last word from the input value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

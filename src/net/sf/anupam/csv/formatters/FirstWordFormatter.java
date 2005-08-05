@@ -25,14 +25,14 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link CSVFieldFormatter formatter} that returns the first word
- * of the specified CSV value. This is useful in situations such as 
+ * of the specified CSV value. This is useful in situations such as
  * extracting the first name.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
- * @see LastWordFormatter
  * @csv.formatter-mapping name="firstWord"
+ * @see LastWordFormatter
+ * @since 1.5
  */
 final class FirstWordFormatter
         implements CSVFieldFormatter {
@@ -45,7 +45,11 @@ final class FirstWordFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(String)
+     * Formats the value and returns the first word.
+     *
+     * @param value the value to be transformed
+     * @return the first word from the input value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

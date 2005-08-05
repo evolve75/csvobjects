@@ -21,16 +21,15 @@
  */
 package net.sf.anupam.csv.formatters;
 
-import java.util.Map;
-
+import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import junit.framework.TestCase;
+import java.util.Map;
 
 /**
  * CSVFormatterConfigParserTest.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  */
@@ -41,13 +40,12 @@ public class CSVFormatterConfigParserTest
      * The logger to use.
      */
     private static final Log LOG = LogFactory
-                                         .getLog(CSVFormatterConfigParserTest.class);
+            .getLog(CSVFormatterConfigParserTest.class);
 
     /**
      * Constructor for CSVFormatterConfigParserTest.
-     * 
-     * @param name
-     *            name of the test
+     *
+     * @param name name of the test
      */
     public CSVFormatterConfigParserTest(final String name) {
         super(name);
@@ -55,9 +53,8 @@ public class CSVFormatterConfigParserTest
 
     /**
      * Main method to run the test.
-     * 
-     * @param args
-     *            program arguments
+     *
+     * @param args program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(CSVFormatterConfigParserTest.class);
@@ -69,15 +66,15 @@ public class CSVFormatterConfigParserTest
      * boolean)'.
      */
     public void testGetFormatMappings() {
-        final CSVFormatterConfigParser parser = new CSVFormatterConfigParser();
+        final CSVFormatterConfigParser parser = CSVFormatterConfigParser.getConfigParser();
         assertNotNull(parser);
 
         final Map<String, FormatterConfiguration> formatterMap = parser
                 .getFormatMappings(
                         "net/sf/anupam/csv/formatters/csv-formatter-config.xml",
                         true);
-        assertNotNull(formatterMap);
-        assertFalse(formatterMap.isEmpty());
+        assertNotNull("Formatter Map Should not be Null", formatterMap);
+        assertFalse("Formatter Map should not be Empty", formatterMap.isEmpty());
 
         for (String formatterName : formatterMap.keySet()) {
             final FormatterConfiguration formatterConfig = formatterMap

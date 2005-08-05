@@ -24,14 +24,14 @@ package net.sf.anupam.csv.formatters;
 /**
  * A {@link CSVFieldFormatter Formatter} which transforms the input into all
  * lower-case and returns the lower-case version.
- * <p>
+ * <p/>
  * The declarative name of this formatter is <code>allLowerCase</code>.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
- * @see AllUpperCaseFormatter
  * @csv.formatter-mapping name="allLowerCase"
+ * @see AllUpperCaseFormatter
+ * @since 1.5
  */
 final class AllLowerCaseFormatter
         implements CSVFieldFormatter {
@@ -44,7 +44,11 @@ final class AllLowerCaseFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(java.lang.String)
+     * Formats the value and transforms the result to all lower case.
+     *
+     * @param value the value to be transformed
+     * @return the lower case transformed value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

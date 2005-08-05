@@ -21,18 +21,19 @@
  */
 package net.sf.anupam.csv.taglets;
 
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet;
 import com.sun.tools.doclets.internal.toolkit.taglets.Taglet;
 
+import java.util.Map;
+import java.util.StringTokenizer;
+
 /**
- * Taglet for outputting the CSV Formatter tag's name attribute.  The 
+ * Taglet for outputting the CSV Formatter tag's name attribute.  The
  * <code>@csv.formatter-mapping</code> tags will be displayed for classes
- * that have the formatter mapping set in the type documentation.
- * 
+ * that have the formatter mapping set in the type documentation. This tag
+ * can only be used on the formatter class' type Javadoc.
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
@@ -40,10 +41,14 @@ import com.sun.tools.doclets.internal.toolkit.taglets.Taglet;
 public class CSVFormatterMappingTaglet
         implements com.sun.tools.doclets.Taglet {
 
-    /** name of the tag. */
-    private static final String NAME   = "csv.formatter-mapping";
+    /**
+     * name of the tag.
+     */
+    private static final String NAME = "csv.formatter-mapping";
 
-    /** The Javadoc header to print. */
+    /**
+     * The Javadoc header to print.
+     */
     private static final String HEADER = "CSV Formatter Mapping:";
 
     /**
@@ -54,6 +59,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Returns the name of this Javadoc tag.
+     *
+     * @return the name of this tag
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#getName()
      */
     public String getName() {
@@ -61,6 +69,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a constructor Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inConstructor()
      */
     public boolean inConstructor() {
@@ -68,6 +79,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a field Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inField()
      */
     public boolean inField() {
@@ -75,6 +89,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a method Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inMethod()
      */
     public boolean inMethod() {
@@ -82,6 +99,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in the overview Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inOverview()
      */
     public boolean inOverview() {
@@ -89,6 +109,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in the package Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inPackage()
      */
     public boolean inPackage() {
@@ -96,6 +119,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a type Javadoc.
+     *
+     * @return <code>true</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inType()
      */
     public boolean inType() {
@@ -103,6 +129,9 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Indicates whether this is an inline tag.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#isInlineTag()
      */
     public boolean isInlineTag() {
@@ -111,9 +140,8 @@ public class CSVFormatterMappingTaglet
 
     /**
      * Register a new instance of this taglet to the Javadoc taglet set.
-     * 
-     * @param tagletMap
-     *            the Javadoc taglet set.
+     *
+     * @param tagletMap the Javadoc taglet set.
      */
     public static void register(final Map<String, Taglet> tagletMap) {
         if (tagletMap.containsKey(NAME)) {
@@ -125,9 +153,8 @@ public class CSVFormatterMappingTaglet
     /**
      * Given the <code>Tag</code> representation of this custom tag, return
      * its string representation.
-     * 
-     * @param tag
-     *            the <code>Tag</code> representation of this custom tag.
+     *
+     * @param tag the <code>Tag</code> representation of this custom tag.
      * @return String representation of the tag
      */
     public String toString(final Tag tag) {
@@ -153,6 +180,10 @@ public class CSVFormatterMappingTaglet
     }
 
     /**
+     * Returns the string to be included the the output Javadoc for the specified tags.
+     *
+     * @param tags the tags for which the string representation should be returned
+     * @return the string representation to include in the output Javadoc
      * @see com.sun.tools.doclets.Taglet#toString(com.sun.javadoc.Tag[])
      */
     public String toString(final Tag [] tags) {

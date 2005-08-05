@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Sample bean to represent an employee designation.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  * @csv.bean-mapping bean-name="designationBean" csv-header="true"
@@ -49,7 +49,12 @@ public class Designation
     }
 
     /**
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     * Compares this designation to another designation.
+     *
+     * @param other the other designation to compare against
+     * @return <code>0</code> if the two designations are equal, <code>-1</code> if this
+     *         designation ranks lower, <code>+1</code> if this designation ranks higher
+     * @see Comparable#compareTo(Object)
      */
     public int compareTo(final Designation other) {
 
@@ -58,7 +63,11 @@ public class Designation
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * Returns the string representation of this designation for <strong>debugging</strong>
+     * purposes only.
+     *
+     * @return the string representation
+     * @see Object#toString()
      */
     @Override
     public String toString() {
@@ -67,7 +76,10 @@ public class Designation
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * Returns the hash code for this designation. The hash code is based on the designation string.
+     *
+     * @return the hash code for this designation
+     * @see Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -75,7 +87,12 @@ public class Designation
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Compares this designation with another for equality. The equality is based on the
+     * designation string.
+     *
+     * @param other the other designation to compare against
+     * @return <code>true</code> if the designations are equal, <code>false</code> otherwise
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals(final Object other) {
@@ -93,7 +110,7 @@ public class Designation
 
     /**
      * Returns value of the designation.
-     * 
+     *
      * @return Returns the designation.
      * @csv.field-mapping position="4"
      */
@@ -103,9 +120,8 @@ public class Designation
 
     /**
      * Sets value of the designation.
-     * 
-     * @param designation
-     *            The designation to set.
+     *
+     * @param designation The designation to set.
      */
     public void setDesignation(final String designation) {
         this.designation = designation;

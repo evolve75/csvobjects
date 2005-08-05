@@ -26,14 +26,14 @@ package net.sf.anupam.csv.formatters;
  * formatter is configured for a CSV field. The formatter performs an Identity
  * operation on the input and returns the same as the <em>"formatted"</em>
  * result.
- * <p>
+ * <p/>
  * The declarative name of this formatter is <code>none</code>.
  * </p>
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
  * @csv.formatter-mapping name="doNothing"
+ * @since 1.5
  */
 final class DoNothingFormatter
         implements CSVFieldFormatter {
@@ -46,7 +46,11 @@ final class DoNothingFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(java.lang.String)
+     * Formats the value and returns the same value.
+     *
+     * @param value the value to be transformed
+     * @return the same value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

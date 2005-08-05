@@ -27,11 +27,11 @@ import org.apache.commons.lang.StringUtils;
  * A {@link CSVFieldFormatter formatter} that returns the trimmed
  * CSV value. This is useful in situations when the CSV field is
  * known to have leading or trailing white-space.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
  * @csv.formatter-mapping name="trimWord"
+ * @since 1.5
  */
 final class TrimWordFormatter
         implements CSVFieldFormatter {
@@ -44,7 +44,12 @@ final class TrimWordFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(String)
+     * Formats the specified value and returns a trimmed representation. All leading and
+     * trailing white space is trimmed.
+     *
+     * @param value the value to be trimmed
+     * @return the trimmed value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

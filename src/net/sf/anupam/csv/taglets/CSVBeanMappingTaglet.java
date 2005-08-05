@@ -21,18 +21,19 @@
  */
 package net.sf.anupam.csv.taglets;
 
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet;
 import com.sun.tools.doclets.internal.toolkit.taglets.Taglet;
 
+import java.util.Map;
+import java.util.StringTokenizer;
+
 /**
- * Taglet for outputting the CSV bean mapping information. The 
+ * Taglet for outputting the CSV bean mapping information. The
  * <code>@csv.bean-mapping</code> tags will be displayed for classes
- * that have CSV bean mapping set in the type Javadoc comment.
- * 
+ * that have CSV bean mapping set in the type Javadoc comment. The tag can
+ * only be specified in the type Javadoc.
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  * @since 1.5
@@ -40,10 +41,14 @@ import com.sun.tools.doclets.internal.toolkit.taglets.Taglet;
 public class CSVBeanMappingTaglet
         implements com.sun.tools.doclets.Taglet {
 
-    /** name of the tag. */
-    private static final String NAME   = "csv.bean-mapping";
+    /**
+     * name of the tag.
+     */
+    private static final String NAME = "csv.bean-mapping";
 
-    /** The Javadoc header to print. */
+    /**
+     * The Javadoc header to print.
+     */
     private static final String HEADER = "CSV Mapping:";
 
     /**
@@ -54,6 +59,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Returns the name of this Javadoc tag.
+     *
+     * @return the name of this tag
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#getName()
      */
     public String getName() {
@@ -61,6 +69,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a constructor Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inConstructor()
      */
     public boolean inConstructor() {
@@ -68,6 +79,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a field Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inField()
      */
     public boolean inField() {
@@ -75,6 +89,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a method Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inMethod()
      */
     public boolean inMethod() {
@@ -82,6 +99,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in the overview Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inOverview()
      */
     public boolean inOverview() {
@@ -89,6 +109,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in the package Javadoc.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inPackage()
      */
     public boolean inPackage() {
@@ -96,6 +119,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this tag can be used in a Type Javadoc.
+     *
+     * @return <code>true</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#inType()
      */
     public boolean inType() {
@@ -103,6 +129,9 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Indicates whether this is an inline tag.
+     *
+     * @return <code>false</code>
      * @see com.sun.tools.doclets.internal.toolkit.taglets.Taglet#isInlineTag()
      */
     public boolean isInlineTag() {
@@ -111,9 +140,8 @@ public class CSVBeanMappingTaglet
 
     /**
      * Register a new instance of this taglet to the Javadoc taglet set.
-     * 
-     * @param tagletMap
-     *            the Javadoc taglet set.
+     *
+     * @param tagletMap the Javadoc taglet set.
      */
     public static void register(final Map<String, Taglet> tagletMap) {
         if (tagletMap.containsKey(NAME)) {
@@ -125,9 +153,8 @@ public class CSVBeanMappingTaglet
     /**
      * Given the <code>Tag</code> representation of this custom tag, return
      * its string representation.
-     * 
-     * @param tag
-     *            the <code>Tag</code> representation of this custom tag.
+     *
+     * @param tag the <code>Tag</code> representation of this custom tag.
      * @return String representation of the tag
      */
     public String toString(final Tag tag) {
@@ -155,6 +182,10 @@ public class CSVBeanMappingTaglet
     }
 
     /**
+     * Returns the string to be displayed on the Javadoc for the specified tags.
+     *
+     * @param tags the list of tags for which the string representation should be returned
+     * @return the string to display on the Javadoc
      * @see com.sun.tools.doclets.Taglet#toString(com.sun.javadoc.Tag[])
      */
     public String toString(final Tag [] tags) {

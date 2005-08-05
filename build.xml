@@ -23,17 +23,17 @@
 -->
 
 <project name="CSVObjects" default="main" basedir=".">
-  
+
     <property file="build.properties"/>
 
     <patternset id="project.libraries">
         <include name="${dir.lib}/**/*.jar"/>
     </patternset>
-    
+
     <!-- Define the classpaths -->
     <path id="project.lib.classpath">
         <fileset dir="${dir.lib}">
-            <include name="**/*.jar"/>                
+            <include name="**/*.jar"/>
         </fileset>
     </path>
 
@@ -51,45 +51,45 @@
 
     <!-- Define the XDoclet task -->
     <taskdef name="xdoclet"
-                     classname="xdoclet.DocletTask"/>
-    
-    
-   <taskdef resource="checkstyletask.properties"/> 
-    
-    
+             classname="xdoclet.DocletTask"/>
+
+
+    <taskdef resource="checkstyletask.properties"/>
+
+
     <!-- Default target -->
     <target name="main"
             depends="init, build, test"
             description="Default target"/>
-    
+
     <!-- Default target -->
-    <target name="all" 
-            depends="clean, build, test, checkstyle, docs" 
+    <target name="all"
+            depends="clean, build, test, checkstyle, docs"
             description="Performs all the project tasks"/>
-    
+
     <!-- Prepares the destination directories. -->
-    <target name="init" 
+    <target name="init"
             description="[Internal] Creates the output directories">
-          
+
         <buildnumber file="${file.bldnumber}"/>
-    
+
         <echo message="Build Number = ${build.number}"/>
 
-        <mkdir dir="${dir.gensrc}"/>  
-        <mkdir dir="${dir.build}"/> 
+        <mkdir dir="${dir.gensrc}"/>
+        <mkdir dir="${dir.build}"/>
 
         <mkdir dir="${dir.dist}"/>
         <mkdir dir="${dir.doc}/api"/>
-    
+
         <copy todir="${dir.build}"
-  		      includeEmptyDirs="false">
+              includeEmptyDirs="false">
             <fileset dir="${dir.src}">
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
     </target>
 
-    <!-- Removes the generated files and directories. -->	
+    <!-- Removes the generated files and directories. -->
     <target name="clean"
             description="Remove all generated files and output directories">
 
@@ -97,40 +97,40 @@
         <delete dir="${dir.build}"/>
         <delete dir="${dir.dist}"/>
         <delete dir="${dir.doc}/api"/>
-    	    <delete quiet="true">
-    	    		<fileset dir="${basedir}">
-    	    			<include name="${ant.project.name}-bin-*.zip"/>
-    	    			<include name="${ant.project.name}-src-*.zip"/>
-    	    			<include name="${ant.project.name}.log"/>
-    	    		</fileset>
-    	    	</delete>
+        <delete quiet="true">
+            <fileset dir="${basedir}">
+                <include name="${ant.project.name}-bin-*.zip"/>
+                <include name="${ant.project.name}-src-*.zip"/>
+                <include name="${ant.project.name}.log"/>
+            </fileset>
+        </delete>
     </target>
 
     <!-- Builds the system -->
     <target name="build"
             depends="init, compile, generatecode, jar"
             description="Performs the build"/>
-    
+
     <!-- Performs code compilation. -->
-    <target name="compile" 
+    <target name="compile"
             depends="init"
             description="[Internal] Compiles all source code.">
 
         <javac compiler="javac1.5"
                failonerror="true"
-               deprecation="on" 
-               srcdir="${dir.src}"  
+               deprecation="on"
+               srcdir="${dir.src}"
                destdir="${dir.build}"
                includeantruntime="false"
                includejavaruntime="true"
                optimize="true"
-               source="1.5"   
+               source="1.5"
                fork="false">
-    	
+
             <sourcepath>
                 <path refid="project.compile.sourcepath"/>
             </sourcepath>
-            
+
             <classpath refid="project.compile.classpath"/>
 
         </javac>
@@ -167,18 +167,18 @@
         <xdoclet destdir="${dir.gensrc}">
             <fileset dir="${dir.src}">
                 <include name="**/*.java"/>
-                <contains text="@csv.formatter-mapping" 
+                <contains text="@csv.formatter-mapping"
                           casesensitive="true"
                           ignorewhitespace="false"/>
-            </fileset>                
+            </fileset>
 
             <template templateFile="${basedir}/csv-formatter.xdt"
                       destinationFile="${file.csv-formatter-cfg}"/>
         </xdoclet>
-    </target>    
+    </target>
 
-    <!-- Creates the distribution Jar files -->    
-    <target name="jar" 
+    <!-- Creates the distribution Jar files -->
+    <target name="jar"
             depends="compile,generatecode"
             description="[Internal] Generates the distribution jar files">
 
@@ -187,67 +187,67 @@
                 <exclude name="**/*Test.class"/>
                 <exclude name="test/**/*.*"/>
             </fileset>
-            
+
             <fileset dir="${dir.gensrc}">
                 <exclude name="${file.csv-mapping}"/>
                 <exclude name="test/**/*.*"/>
             </fileset>
-            
+
             <manifest>
                 <attribute name="Built-By" value="Anupam Sengupta"/>
                 <attribute name="Sealed" value="true"/>
             </manifest>
         </jar>
-    
+
         <jar jarfile="${dir.dist}/${ant.project.name}_tests-${release.number}.jar">
             <fileset dir="${dir.build}">
                 <include name="**/*Test.class"/>
                 <include name="test/**/*.*"/>
             </fileset>
-    		
+
             <fileset dir="${dir.gensrc}">
                 <include name="${file.csv-mapping}"/>
                 <include name="test/**/*.*"/>
             </fileset>
-            
+
             <manifest>
                 <attribute name="Built-By" value="Anupam Sengupta"/>
                 <attribute name="Sealed" value="true"/>
             </manifest>
         </jar>
-    
+
         <checksum algorithm="MD5">
             <fileset dir="${dir.dist}">
                 <include name="${ant.project.name}-${release.number}.jar"/>
             </fileset>
-        </checksum>       
+        </checksum>
 
     </target>
 
-	<!-- Performs Checkstyle checks -->
+    <!-- Performs Checkstyle checks -->
     <target name="checkstyle"
             description="Generates a report of code convention violations.">
 
-      <checkstyle config="checkstyle_sun_checks.xml"
-                  failureProperty="checkstyle.failure"
-                  failOnViolation="false">
-        <formatter type="xml" 
-        	           tofile="${dir.dist}/checkstyle_report-${release.number}.xml"/>
-        <fileset dir="${dir.src}">
-            <include name="**/*.java"/>
-            <exclude name="test/**/*.java"/>
-        </fileset>
-      </checkstyle>
+        <checkstyle config="checkstyle_sun_checks.xml"
+                    failureProperty="checkstyle.failure"
+                    failOnViolation="false">
+            <formatter type="xml"
+                       tofile="${dir.dist}/checkstyle_report-${release.number}.xml"/>
+            <fileset dir="${dir.src}">
+                <include name="**/*.java"/>
+                <exclude name="test/**/*.java"/>
+            </fileset>
+        </checkstyle>
 
-      <style in="${dir.dist}/checkstyle_report-${release.number}.xml" 
-             out="${dir.dist}/checkstyle_report-${release.number}.html" 
-             style="checkstyle-simple.xsl"/>
+        <style in="${dir.dist}/checkstyle_report-${release.number}.xml"
+               out="${dir.dist}/checkstyle_report-${release.number}.html"
+               style="checkstyle-simple.xsl"/>
 
     </target>
-    
-    <!-- Generates the Javadoc --> 
-    <target name="docs" 
-            depends="init, compile" 
+
+    <!-- Generates the Javadoc -->
+    <target name="docs"
+            depends="init, compile"
             description="Generates the Javadoc">
 
         <javadoc defaultexcludes="yes"
@@ -258,12 +258,12 @@
                  use="true"
                  splitindex="true"
                  windowtitle="CSVObjects Framework API Documentation Release ${release.number}"
-                 source="1.5"    
+                 source="1.5"
                  breakiterator="yes"
                  linksource="yes"
                  verbose="false"
-	           >
-			
+                >
+
             <tag name="csv.bean-mapping"
                  enabled="true"
                  description="CSV Bean mapping"
@@ -278,79 +278,90 @@
                  enabled="true"
                  description="CSV Formatter"
                  scope="types"/>
-            
+
             <doctitle><![CDATA[<h1>CSVObjects Framework</h1>]]></doctitle>
             <header><![CDATA[<a href="http://www.csvobjects.org/" target="_blank">CSVObjects Framework</a>]]></header>
-            <footer><![CDATA[<a href="http://sourceforge.net"><img src="http://sourceforge.net/sflogo.php?group_id=143837&amp;type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>]]></footer>
-         	<bottom><![CDATA[<em>&copy; Anupam Sengupta 2005</em>]]></bottom>
+
+            <!--<footer>
+                <![CDATA[
+                <a href="http://www.sourceforge.net/">
+                    <img src="http://sourceforge.net/sflogo.php?group_id=143837&amp;type=1"
+                         width="88"
+                         height="31"
+                         border="0"
+                         alt="SourceForge.net Logo" />
+                </a>
+                ]]>
+            </footer>-->
+            <bottom><![CDATA[<em>&copy; Anupam Sengupta 2005</em>]]></bottom>
 
             <fileset dir="${dir.src}">
-                
-              	<exclude name="**/*Test.java"/>
-            	    <include name="net/**/*.java"/>
+
+                <exclude name="**/*Test.java"/>
+                <include name="net/**/*.java"/>
                 <include name="test/**/*.java"/>
-            	   
+
             </fileset>
-            
-            <link href="http://java.sun.com/j2se/1.5.0/docs/api/" 
+
+            <link href="http://java.sun.com/j2se/1.5.0/docs/api/"
                   offline="true"
-                  packagelistloc="${dir.doc}/package-list/J2SE1.5"/> 
+                  packagelistloc="${dir.doc}/package-list/J2SE1.5"/>
 
-            <link href="http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_1/" 
-                     offline="true"
-                     packagelistloc="${dir.doc}/package-list/commons-collections-3.1"/>
+            <link href="http://jakarta.apache.org/commons/collections/apidocs-COLLECTIONS_3_1/"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/commons-collections-3.1"/>
 
-            <link href="http://jakarta.apache.org/commons/logging/api/" 
-                     offline="true"
-                     packagelistloc="${dir.doc}/package-list/commons-logging-1.0.4"/>
+            <link href="http://jakarta.apache.org/commons/logging/api/"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/commons-logging-1.0.4"/>
 
-            <link href="http://jakarta.apache.org/commons/lang/api/" 
-                                 offline="true"
-                                 packagelistloc="${dir.doc}/package-list/commons-lang-2.1"/>
+            <link href="http://jakarta.apache.org/commons/lang/api/"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/commons-lang-2.1"/>
 
-            <link href="http://jakarta.apache.org/commons/digester/commons-digester-1.7/docs/api/" 
-                                 offline="true"
-                                 packagelistloc="${dir.doc}/package-list/commons-digester-1.7"/>
-            
-            <link href="http://ostermiller.org/utils/doc/" 
-                     offline="true"
-                     packagelistloc="${dir.doc}/package-list/ostermiller/"/>
+            <link href="http://jakarta.apache.org/commons/digester/commons-digester-1.7/docs/api/"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/commons-digester-1.7"/>
 
-            <link href="http://www.junit.org/junit/javadoc/3.8.1/index.htm" 
-                     offline="true"
-                     packagelistloc="${dir.doc}/package-list/junit-3.8.1"/>
+            <link href="http://ostermiller.org/utils/doc/"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/ostermiller/"/>
+
+            <link href="http://www.junit.org/junit/javadoc/3.8.1/index.htm"
+                  offline="true"
+                  packagelistloc="${dir.doc}/package-list/junit-3.8.1"/>
 
             <classpath refid="project.lib.classpath"/>
             <group title="User packages" packages="net.sf.anupam.csv"/>
             <group title="Taglets" packages="net.sf.anupam.csv.taglets"/>
-            <group title="Implementation Packages" 
+            <group title="Implementation Packages"
                    packages="net.sf.anupam.csv.formatters, net.sf.anupam.csv.mapping"/>
             <group title="Test Packages" packages="test.net.sf.anupam.csv.*"/>
-            
+
             <taglet name="net.sf.anupam.csv.taglets.CSVBeanMappingTaglet"
                     path="${dir.build}"/>
-            
+
             <taglet name="net.sf.anupam.csv.taglets.CSVFieldMappingTaglet"
                     path="${dir.build}"/>
-            
+
             <taglet name="net.sf.anupam.csv.taglets.CSVFormatterMappingTaglet"
                     path="${dir.build}"/>
         </javadoc>
 
     </target>
-  
+
     <!-- Performs all tests. -->
-    <target name="test" 
-            depends="jar" 
+    <target name="test"
+            depends="jar"
             description="Runs all the JUnit Tests">
-          
+
         <delete dir="${dir.dist}/test-results-xml"/>
-        <delete dir="${dir.dist}/test-results-html"/>          
+        <delete dir="${dir.dist}/test-results-html"/>
         <mkdir dir="${dir.dist}/test-results-xml"/>
         <mkdir dir="${dir.dist}/test-results-html"/>
 
-        <junit printsummary="on" 
-               fork="true" 
+        <junit printsummary="on"
+               fork="true"
                haltonfailure="false"
                failureproperty="tests.failed"
                showoutput="false">
@@ -359,7 +370,7 @@
                          value="${file.sample_csv_file}"/>
             <classpath>
                 <path refid="project.compile.classpath"/>
-                <path path="${dir.gensrc}"/>       
+                <path path="${dir.gensrc}"/>
             </classpath>
 
             <formatter type="xml"/>
@@ -376,73 +387,73 @@
             <fileset dir="${dir.dist}/test-results-xml">
                 <include name="TEST-*.xml"/>
             </fileset>
-            
-            <report format="frames" 
+
+            <report format="frames"
                     todir="${dir.dist}/test-results-html"/>
         </junitreport>
-	
+
 
         <fail if="tests.failed">
-    *******************************************************
-    *******************************************************
-    One or more tests failed. Check the output...
-    *******************************************************
-    *******************************************************
+            *******************************************************
+            *******************************************************
+            One or more tests failed. Check the output...
+            *******************************************************
+            *******************************************************
         </fail>
-	
+
     </target>
 
     <target name="dist"
-	        depends="init,build,checkstyle,docs,test"
-	        description="Creates the distribution ZIP">
-    	    	
-    		<zip destfile="${ant.project.name}-bin-${release.number}.zip"
-    	         compress="true"
-    	         update="true">
-    		
-    			<zipfileset dir="${basedir}"
-    				        prefix="${ant.project.name}-${release.number}">
-    				<include name="*.*"/>
-    				<include name="LICENSE"/>
-    				<include name="README"/>
-    				<exclude name="build.*"/>
-    				<exclude name="checkstyle*.*"/>
-    				<exclude name=".*"/>
-    				<exclude name="*.zip"/>
-    				<exclude name="*.log"/>
-    				<include name="${dir.dist}/**/*.*"/>
-    				<include name="${dir.lib}/**/*.*"/>
-    				<include name="${dir.doc}/api/**/*.*"/>
-    				
-    			</zipfileset>
-    		</zip>
-    	
-	</target>
-	
+            depends="init,build,checkstyle,docs,test"
+            description="Creates the distribution ZIP">
+
+        <zip destfile="${ant.project.name}-bin-${release.number}.zip"
+             compress="true"
+             update="true">
+
+            <zipfileset dir="${basedir}"
+                        prefix="${ant.project.name}-${release.number}">
+                <include name="*.*"/>
+                <include name="LICENSE"/>
+                <include name="README"/>
+                <exclude name="build.*"/>
+                <exclude name="checkstyle*.*"/>
+                <exclude name=".*"/>
+                <exclude name="*.zip"/>
+                <exclude name="*.log"/>
+                <include name="${dir.dist}/**/*.*"/>
+                <include name="${dir.lib}/**/*.*"/>
+                <include name="${dir.doc}/api/**/*.*"/>
+
+            </zipfileset>
+        </zip>
+
+    </target>
+
     <!-- Creates a ZIP distribution of the source code -->
     <target name="src-dist"
             description="Creates a ZIP of the source code">
-        
-        
+
+
         <zip destfile="${ant.project.name}-src-${release.number}.zip"
              compress="true"
              update="true">
-            
-        	   <zipfileset dir="${basedir}"
-        	   	           prefix="${ant.project.name}-${release.number}">
-        	   	     <include name="*.*"/>
-        	   	     <include name="LICENSE"/>
-        	   	     <include name="README"/>
-        	   		 <exclude name=".*"/>
-        	   		 <exclude name="*.zip"/>
-             	 <exclude name="*.log"/>
-        	   		 <include name="${dir.src}/**/*.*"/>
-        	   	     <include name="${dir.doc}/**/*.*"/>
-        	   	     <exclude name="${dir.doc}/api/**/*.*"/>
-        	   		 <include name="${dir.lib}/**/*.*"/>
-        	   		 
-        	   </zipfileset>	
+
+            <zipfileset dir="${basedir}"
+                        prefix="${ant.project.name}-${release.number}">
+                <include name="*.*"/>
+                <include name="LICENSE"/>
+                <include name="README"/>
+                <exclude name=".*"/>
+                <exclude name="*.zip"/>
+                <exclude name="*.log"/>
+                <include name="${dir.src}/**/*.*"/>
+                <include name="${dir.doc}/**/*.*"/>
+                <exclude name="${dir.doc}/api/**/*.*"/>
+                <include name="${dir.lib}/**/*.*"/>
+
+            </zipfileset>
         </zip>
     </target>
-	
+
 </project>

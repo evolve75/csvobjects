@@ -24,14 +24,14 @@ package net.sf.anupam.csv.formatters;
 /**
  * A {@link CSVFieldFormatter Formatter} which transforms the input into all upper case and returns the
  * upper case version.
- * <p>
+ * <p/>
  * The declarative name of this formatter is <code>allUpperCase</code>.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
- * @see AllLowerCaseFormatter
  * @csv.formatter-mapping name="allUpperCase"
+ * @see AllLowerCaseFormatter
+ * @since 1.5
  */
 final class AllUpperCaseFormatter
         implements CSVFieldFormatter {
@@ -44,7 +44,11 @@ final class AllUpperCaseFormatter
     }
 
     /**
-     * @see net.sf.anupam.csv.formatters.CSVFieldFormatter#format(java.lang.String)
+     * Formats the value and transforms the result to all UPPER case.
+     *
+     * @param value the value to be transformed
+     * @return the UPPER case transformed value
+     * @see CSVFieldFormatter#format(String)
      */
     public String format(final String value) {
 

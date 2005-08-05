@@ -1,21 +1,21 @@
 /*
- * CSVFieldMapping.java 
- * 
- * Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
- * 
- * This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 2 
- * of the License, or (at your option) any later version. 
- * 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * 
+ * CSVFieldMapping.java
+ *
+ * Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software 
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * Version: $Revision$
  */
@@ -27,16 +27,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * Represents a single CSV field to Java Bean attribute mapping. The mapping can
  * be for basic data types, or point to other referenced CSV bean mappings for
  * representing nested beans.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
- * @since 1.5
  * @see CSVBeanMapping
+ * @since 1.5
  */
 public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
@@ -89,7 +90,11 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * Returns the hash code for this field mapping. The hash code is based on the
+     * field name and the field position.
+     *
+     * @return the hash code
+     * @see Object#hashCode()
      */
     @Override
     public int hashCode() {
@@ -98,7 +103,12 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Compares this field mapping with another for equality. Field mappings are compared
+     * for the name and the field position.
+     *
+     * @param other the other field mapping to compare against
+     * @return <code>true</code> if equal, <code>false</code> otherwise
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals(final Object other) {
@@ -116,15 +126,16 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Dumps the contents of this field mapping as a string. This is meant for
      * <strong>debugging</strong> only.
-     * 
-     * @see java.lang.Object#toString()
+     *
+     * @return the string representation
+     * @see Object#toString()
      */
     @Override
     public String toString() {
         final ToStringBuilder strBuilder = new ToStringBuilder(this);
         strBuilder.append("fieldName", fieldName)
                 .append("fieldType", fieldType).append("fieldPosition",
-                        fieldPosition).append("attributeName", attributeName)
+                fieldPosition).append("attributeName", attributeName)
                 .append("reformatterName", reformatterName);
 
         strBuilder.append("FormatterClass", (formatter != null ? formatter
@@ -138,21 +149,30 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     }
 
     /**
-     * @see java.lang.Comparable#compareTo
+     * Compares this field mapping to another mapping. The comparision is based on
+     * the field position.
+     *
+     * @param other the other field mapping to compare to
+     * @return <code>0</code> if the two field mappings are equal, <code>-1</code> if this
+     *         field mapping position is less than the other's, and <code>+1</code> if this field mapping
+     *         position is higher than the others.
+     * @see Comparable#compareTo
      */
     public int compareTo(final CSVFieldMapping other) {
         if (this.equals(other)) {
             return 0;
         } else {
-            return (this.getFieldPosition() < other.getFieldPosition()) ? -1
-                    : +1;
+            return new CompareToBuilder().append(this.getFieldName(), other.getFieldName())
+                    .append(this.getFieldPosition(), other.getFieldPosition()).toComparison();
+
+
         }
 
     }
 
     /**
      * Returns the mapped POJO bean's attribute name corresponding to this field.
-     * 
+     *
      * @return Returns the mapped POJO attribute name
      */
     public String getAttributeName() {
@@ -162,9 +182,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Sets the mapped POJO's attribute name corresponding to this field. The name has to <strong>exactly</strong>
      * match the attribute name (including the case).
-     * 
-     * @param attributeName
-     *            The mapped POJO' attribute name
+     *
+     * @param attributeName The mapped POJO' attribute name
      */
     public void setAttributeName(final String attributeName) {
         this.attributeName = StringUtils.trim(attributeName);
@@ -172,7 +191,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Returns the user defined name of this field.
-     * 
+     *
      * @return Returns the name of this field.
      */
     public String getFieldName() {
@@ -182,9 +201,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Sets the user defined name of this field. This need not be same
      * as the CSV field name (if defined on the CSV header row).
-     * 
-     * @param fieldName
-     *            The name of this field
+     *
+     * @param fieldName The name of this field
      */
     public void setFieldName(final String fieldName) {
         this.fieldName = StringUtils.trim(fieldName);
@@ -193,7 +211,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Returns this field's position in the CSV line. Field positions
      * start at 0.
-     * 
+     *
      * @return Returns the field's position
      */
     public int getFieldPosition() {
@@ -201,11 +219,10 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     }
 
     /**
-     * Sets this field's position in the CSV line. Field positions start 
+     * Sets this field's position in the CSV line. Field positions start
      * at 0.
-     * 
-     * @param fieldPosition
-     *            The field's position in the CSV line
+     *
+     * @param fieldPosition The field's position in the CSV line
      */
     public void setFieldPosition(final int fieldPosition) {
         this.fieldPosition = fieldPosition;
@@ -213,7 +230,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Returns the fully qualified Java type name of this field.
-     * 
+     *
      * @return Returns the Java type name of this field
      */
     public String getFieldType() {
@@ -222,9 +239,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Sets the fully qualified Java type name of this field.
-     * 
-     * @param fieldType
-     *            The Java type name of this field
+     *
+     * @param fieldType The Java type name of this field
      */
     public void setFieldType(final String fieldType) {
         this.fieldType = StringUtils.trim(fieldType);
@@ -232,7 +248,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Returns the CSV formatter attached to this field.
-     * 
+     *
      * @return Returns the formatter
      */
     public CSVFieldFormatter getFormatter() {
@@ -241,9 +257,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Sets the formatter attached to this field.
-     * 
-     * @param formatter
-     *            The formatter to set
+     *
+     * @param formatter The formatter to set
      */
     public void setFormatter(final CSVFieldFormatter formatter) {
         this.formatter = formatter;
@@ -251,7 +266,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Returns the declarative name of the formatter attached to this field.
-     * 
+     *
      * @return Returns the declarative formatter name
      */
     public String getReformatterName() {
@@ -260,9 +275,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Sets the declarative name of the formatter attached to this field.
-     * 
-     * @param reformatterName
-     *            The declarative formatter name to set
+     *
+     * @param reformatterName The declarative formatter name to set
      */
     public void setReformatterName(final String reformatterName) {
         this.reformatterName = reformatterName;
@@ -271,7 +285,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Returns the declarative name of the referenced bean mapping for this field, or
      * <code>null</code> if no bean mapping if referenced by this field.
-     * 
+     *
      * @return Returns name of the referenced bean mapping
      */
     public String getBeanReferenceName() {
@@ -281,9 +295,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Sets the declarative name of a referenced bean mapping for this
      * field.
-     * 
-     * @param beanReferenceName
-     *            The declarative name of the referenced bean
+     *
+     * @param beanReferenceName The declarative name of the referenced bean
      */
     public void setBeanReferenceName(final String beanReferenceName) {
         this.beanReferenceName = beanReferenceName;
@@ -291,9 +304,8 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
 
     /**
      * Sets the referenced bean mapping for this field.
-     * 
-     * @param beanReference
-     *            The bean mapping reference to set
+     *
+     * @param beanReference The bean mapping reference to set
      */
     public void setBeanReference(final CSVBeanMapping beanReference) {
         this.beanReference = beanReference;
@@ -302,7 +314,7 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     /**
      * Returns the referenced bean mapping, if one is present. Returns
      * <code>null</code> if this field does not have any bean reference.
-     * 
+     *
      * @return Returns the bean mapping reference
      */
     public CSVBeanMapping getBeanReference() {

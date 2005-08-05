@@ -21,20 +21,19 @@
  */
 package net.sf.anupam.csv;
 
+import junit.framework.TestCase;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import junit.framework.TestCase;
-
 /**
  * TestCSVReader.
- * 
+ *
  * @author Tata Consultancy Services
  * @version $Revision$
  */
@@ -44,27 +43,26 @@ public class CSVReaderTest
     /**
      * The sample data file to use for the test.
      */
-    public static final String SAMPLE_CSV_FILE = "SAMPLE_CSV_FILE";
+    private static final String sampleCSVFileName = "test/net/sf/anupam/csv/beans/sample.csv";
 
     /**
      * Logger to use.
      */
-    private static final Log   LOG             = LogFactory
-                                                       .getLog(CSVReaderTest.class);
+    private static final Log LOG = LogFactory
+            .getLog(CSVReaderTest.class);
 
     /**
      * The CSV reader to use in the test.
      */
-    private Reader             csvReader;
+    private Reader csvReader;
 
     // ~ Constructors
     // -----------------------------------------------------------
 
     /**
      * Constructor for TestCSVReader.
-     * 
-     * @param testName
-     *            name of the test
+     *
+     * @param testName name of the test
      */
     public CSVReaderTest(final String testName) {
         super(testName);
@@ -75,22 +73,23 @@ public class CSVReaderTest
 
     /**
      * Main method to run the test.
-     * 
-     * @param args
-     *            Program arguments
+     *
+     * @param args Program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(CSVReaderTest.class);
     }
 
     /**
+     * Reads the sample CSV file for this test.
+     *
+     * @throws Exception if the file IO fails
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        final String sampleCSVFileName = System.getProperty(SAMPLE_CSV_FILE);
         csvReader = new InputStreamReader(ClassLoader
                 .getSystemResourceAsStream(sampleCSVFileName));
         LOG.info("Loaded the test CSV file");
@@ -98,6 +97,9 @@ public class CSVReaderTest
     }
 
     /**
+     * Closes the CSV reader.
+     *
+     * @throws Exception if an IO error occurs
      * @see junit.framework.TestCase#tearDown()
      */
     @Override

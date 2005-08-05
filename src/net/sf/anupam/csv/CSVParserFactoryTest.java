@@ -1,39 +1,38 @@
 /*
- * CSVParserFactoryTest.java 
- * 
- * Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net) 
- * 
- * This program is free software; you can redistribute it and/or 
- * modify it under the terms of the GNU General Public License 
- * as published by the Free Software Foundation; either version 2 
- * of the License, or (at your option) any later version. 
- * 
- * This program is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * GNU General Public License for more details. 
- * 
+ * CSVParserFactoryTest.java
+ *
+ * Copyright (C) 2005 Anupam Sengupta (anupamsg@users.sourceforge.net)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software 
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. 
- *  
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  * Version: $Revision$
  */
 package net.sf.anupam.csv;
 
-import java.io.FileNotFoundException;
-
+import junit.framework.TestCase;
 import net.sf.anupam.csv.mapping.CSVBeanMapping;
 import net.sf.anupam.csv.mapping.CSVFieldMapping;
-
+import net.sf.anupam.csv.exceptions.CSVOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import junit.framework.TestCase;
+import java.io.FileNotFoundException;
 
 /**
  * CSVParserFactoryTest.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  */
@@ -48,14 +47,13 @@ public class CSVParserFactoryTest
     /**
      * The logger to use.
      */
-    private Log                 log             = LogFactory
-                                                        .getLog(CSVParserFactoryTest.class);
+    private Log log = LogFactory
+            .getLog(CSVParserFactoryTest.class);
 
     /**
      * Constructor for CSVParserFactoryTest.
-     * 
-     * @param name
-     *            name of the test
+     *
+     * @param name name of the test
      */
     public CSVParserFactoryTest(final String name) {
         super(name);
@@ -63,27 +61,20 @@ public class CSVParserFactoryTest
 
     /**
      * Main method to run the test.
-     * 
-     * @param args
-     *            program arguments
+     *
+     * @param args program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(CSVParserFactoryTest.class);
     }
 
     /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-    }
-
-    /**
      * Test the getBeanMapping method.
+     *
+     * @throws net.sf.anupam.csv.exceptions.CSVOException
+     *          thrown if there is a test failure
      */
-    public void testGetBeanMapping() {
+    public void testGetBeanMapping() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
         assertNotNull(parserFactory);
@@ -100,15 +91,17 @@ public class CSVParserFactoryTest
 
     /**
      * Tests the getCSVParser method.
+     *
+     * @throws CSVOException
      */
-    public void testGetCSVParser() {
+    public void testGetCSVParser() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
         assertNotNull(parserFactory);
 
         try {
-            parserFactory.getCSVParser("employeeBean", SAMPLE_CSV_FILE, true,
-                    true);
+            parserFactory.getCSVParser("employeeBean", SAMPLE_CSV_FILE, true
+            );
         } catch (final FileNotFoundException e) {
             fail("Unexpected exception "
                     + e.getLocalizedMessage());
@@ -117,14 +110,16 @@ public class CSVParserFactoryTest
 
     /**
      * Tests the getCSVParser method.
+     *
+     * @throws CSVOException
      */
-    public void testGetCSVParserForException() {
+    public void testGetCSVParserForException() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
         assertNotNull(parserFactory);
 
         try {
-            parserFactory.getCSVParser("employeeBean", "dummy", true, true);
+            parserFactory.getCSVParser("employeeBean", "dummy", true);
             fail("Should have thrown a FileNotFoundException");
         } catch (final FileNotFoundException e) {
             // Do nothing
@@ -133,14 +128,16 @@ public class CSVParserFactoryTest
 
     /**
      * Tests the getCSVParser method.
+     *
+     * @throws CSVOException
      */
-    public void testGetCSVParserForEmptyBean() {
+    public void testGetCSVParserForEmptyBean() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
         assertNotNull(parserFactory);
 
         try {
-            parserFactory.getCSVParser("", SAMPLE_CSV_FILE, true, true);
+            parserFactory.getCSVParser("", SAMPLE_CSV_FILE, true);
             fail("Should have thrown a FileNotFoundException");
         } catch (final Throwable e) {
             // Do nothing
