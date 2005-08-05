@@ -282,7 +282,7 @@
             <doctitle><![CDATA[<h1>CSVObjects Framework</h1>]]></doctitle>
             <header><![CDATA[<a href="http://www.csvobjects.org/" target="_blank">CSVObjects Framework</a>]]></header>
 
-            <!--<footer>
+            <footer>
                 <![CDATA[
                 <a href="http://www.sourceforge.net/">
                     <img src="http://sourceforge.net/sflogo.php?group_id=143837&amp;type=1"
@@ -292,7 +292,7 @@
                          alt="SourceForge.net Logo" />
                 </a>
                 ]]>
-            </footer>-->
+            </footer>
             <bottom><![CDATA[<em>&copy; Anupam Sengupta 2005</em>]]></bottom>
 
             <fileset dir="${dir.src}">
@@ -420,6 +420,9 @@
                 <exclude name="checkstyle*.*"/>
                 <exclude name=".*"/>
                 <exclude name="*.zip"/>
+                <exclude name="*.iml"/>
+                <exclude name="*.ipr"/>
+                <exclude name="*.iws"/>
                 <exclude name="*.log"/>
                 <include name="${dir.dist}/**/*.*"/>
                 <include name="${dir.lib}/**/*.*"/>
@@ -447,6 +450,9 @@
                 <exclude name=".*"/>
                 <exclude name="*.zip"/>
                 <exclude name="*.log"/>
+                <exclude name="*.iml"/>
+                <exclude name="*.ipr"/>
+                <exclude name="*.iws"/>
                 <include name="${dir.src}/**/*.*"/>
                 <include name="${dir.doc}/**/*.*"/>
                 <exclude name="${dir.doc}/api/**/*.*"/>
