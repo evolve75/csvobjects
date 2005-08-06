@@ -47,8 +47,10 @@ public class CSVParserFactoryTest
     /**
      * The logger to use.
      */
-    private Log log = LogFactory
+    private static final Log LOG = LogFactory
             .getLog(CSVParserFactoryTest.class);
+
+    private static final String NOT_NULL_FACTORY_MSG = "The singleton instance of parser factory should not be null";
 
     /**
      * Constructor for CSVParserFactoryTest.
@@ -77,15 +79,15 @@ public class CSVParserFactoryTest
     public void testGetBeanMapping() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
-        assertNotNull(parserFactory);
+        assertNotNull(NOT_NULL_FACTORY_MSG, parserFactory);
 
         final CSVBeanMapping beanMapping = parserFactory
                 .getBeanMapping("employeeBean");
-        assertNotNull(beanMapping);
-        log.debug(beanMapping);
+        assertNotNull("The Bean mapping for employeeBean should not be null", beanMapping);
+        LOG.debug(beanMapping);
         for (CSVFieldMapping fieldMapping : beanMapping) {
-            assertNotNull(fieldMapping);
-            log.debug(fieldMapping);
+            assertNotNull("The field mapping should not be null", fieldMapping);
+            LOG.debug(fieldMapping);
         }
     }
 
@@ -97,7 +99,7 @@ public class CSVParserFactoryTest
     public void testGetCSVParser() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
-        assertNotNull(parserFactory);
+        assertNotNull(NOT_NULL_FACTORY_MSG, parserFactory);
 
         try {
             parserFactory.getCSVParser("employeeBean", SAMPLE_CSV_FILE, true
@@ -116,7 +118,7 @@ public class CSVParserFactoryTest
     public void testGetCSVParserForException() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
-        assertNotNull(parserFactory);
+        assertNotNull(NOT_NULL_FACTORY_MSG, parserFactory);
 
         try {
             parserFactory.getCSVParser("employeeBean", "dummy", true);
@@ -134,12 +136,34 @@ public class CSVParserFactoryTest
     public void testGetCSVParserForEmptyBean() throws CSVOException {
         final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
 
-        assertNotNull(parserFactory);
+        assertNotNull(NOT_NULL_FACTORY_MSG, parserFactory);
 
         try {
             parserFactory.getCSVParser("", SAMPLE_CSV_FILE, true);
-            fail("Should have thrown a FileNotFoundException");
-        } catch (final Throwable e) {
+            fail("Should have thrown an IllegalArgumentException");
+        } catch (final IllegalArgumentException e) {
+            // Do nothing
+        } catch (final FileNotFoundException e) {
+            fail("Should have thrown an IllegalArgumentException");
+        }
+    }
+
+    /**
+     * Tests the getCSVParser method.
+     *
+     * @throws CSVOException
+     */
+    public void testGetCSVParserForNoFile() throws CSVOException {
+        final CSVParserFactory parserFactory = CSVParserFactory.getSingleton();
+
+        assertNotNull(NOT_NULL_FACTORY_MSG, parserFactory);
+
+        try {
+            parserFactory.getCSVParser("employeeBean", "DUMMY", true);
+            fail("Should have thrown an FileNotFoundException");
+        } catch (final IllegalArgumentException e) {
+            fail("Should have thrown an FileNotFoundException");
+        } catch (final FileNotFoundException e) {
             // Do nothing
         }
     }

@@ -66,12 +66,12 @@ public class CSVParser implements Iterable<Object> {
     /**
      * The CSV Reader to use for this parser.
      */
-    private CSVReader reader;
+    private transient CSVReader reader;
 
     /**
      * The root bean mapping configuration for this parser.
      */
-    private CSVBeanMapping rootBeanMapping;
+    private transient CSVBeanMapping rootBeanMapping;
 
     /**
      * Constructor for CSVParser. The constructor accepts the bean mapping to
@@ -110,11 +110,8 @@ public class CSVParser implements Iterable<Object> {
      */
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
-        if (reader != null) {
-            reader.close();
-            reader = null;
-        }
+        close();
+        reader = null;
         rootBeanMapping = null;
     }
 
@@ -145,7 +142,7 @@ public class CSVParser implements Iterable<Object> {
          * @see Object#finalize()
          */
         @Override
-        protected final void finalize() throws Throwable {
+        protected void finalize() throws Throwable {
             super.finalize();
             csvLineIter = null;
         }
@@ -156,7 +153,7 @@ public class CSVParser implements Iterable<Object> {
          * @return indicates whether there are any more parsed beans
          * @see java.util.Iterator#hasNext()
          */
-        public final boolean hasNext() {
+        public boolean hasNext() {
             return csvLineIter.hasNext();
         }
 
@@ -178,7 +175,7 @@ public class CSVParser implements Iterable<Object> {
          *
          * @see java.util.Iterator#remove()
          */
-        public final void remove() {
+        public void remove() {
             csvLineIter.remove();
         }
 
@@ -294,4 +291,13 @@ public class CSVParser implements Iterable<Object> {
         return this.rootBeanMapping;
     }
 
+
+    /**
+     * Closes the parser.
+     */
+    public void close() {
+        if (reader != null) {
+            reader.close();
+        }
+    }
 }

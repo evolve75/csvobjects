@@ -138,13 +138,16 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
                 fieldPosition).append("attributeName", attributeName)
                 .append("reformatterName", reformatterName);
 
-        strBuilder.append("FormatterClass", (formatter != null ? formatter
-                .getClass() : "None"));
+        strBuilder.append("FormatterClass", (
+                formatter == null
+                        ? "None"
+                        : formatter
+                        .getClass()));
         strBuilder.append("beanReferenceName", beanReferenceName);
         strBuilder
                 .append("Bean Reference Class",
-                        (beanReference != null) ? beanReference.getBeanClass()
-                                : "None");
+                        (beanReference == null) ? "none" : beanReference.getBeanClass()
+                );
         return strBuilder.toString();
     }
 

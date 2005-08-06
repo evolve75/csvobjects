@@ -185,6 +185,7 @@
         <jar jarfile="${dir.dist}/${ant.project.name}-${release.number}.jar">
             <fileset dir="${dir.build}">
                 <exclude name="**/*Test.class"/>
+                <exclude name="**/taglets/*.class"/>
                 <exclude name="test/**/*.*"/>
             </fileset>
 
@@ -195,7 +196,18 @@
 
             <manifest>
                 <attribute name="Built-By" value="Anupam Sengupta"/>
-                <attribute name="Sealed" value="true"/>
+                <attribute name="Sealed" value="${jar.seal}"/>
+            </manifest>
+        </jar>
+
+        <jar jarfile="${dir.dist}/${ant.project.name}_doctags-${release.number}.jar">
+            <fileset dir="${dir.build}">
+                <include name="**/taglets/*.class"/>
+            </fileset>
+
+            <manifest>
+                <attribute name="Built-By" value="Anupam Sengupta"/>
+                <attribute name="Sealed" value="${jar.seal}"/>
             </manifest>
         </jar>
 
@@ -212,7 +224,7 @@
 
             <manifest>
                 <attribute name="Built-By" value="Anupam Sengupta"/>
-                <attribute name="Sealed" value="true"/>
+                <attribute name="Sealed" value="${jar.seal}"/>
             </manifest>
         </jar>
 
@@ -378,6 +390,7 @@
             <batchtest todir="${dir.dist}/test-results-xml">
                 <fileset dir="${dir.src}">
                     <include name="**/*Test.java"/>
+                    <exclude name="**/*TimedTest.java"/>
                 </fileset>
             </batchtest>
 
@@ -457,6 +470,35 @@
                 <include name="${dir.doc}/**/*.*"/>
                 <exclude name="${dir.doc}/api/**/*.*"/>
                 <include name="${dir.lib}/**/*.*"/>
+
+            </zipfileset>
+        </zip>
+    </target>
+
+    <!-- Creates a ZIP distribution of the source code -->
+    <target name="src-nolib-dist"
+            description="Creates a ZIP of the source code">
+
+
+        <zip destfile="${ant.project.name}-src-nolib-${release.number}.zip"
+             compress="true"
+             update="true">
+
+            <zipfileset dir="${basedir}"
+                        prefix="${ant.project.name}-${release.number}">
+                <include name="*.*"/>
+                <include name="LICENSE"/>
+                <include name="README"/>
+                <exclude name=".*"/>
+                <exclude name="*.zip"/>
+                <exclude name="*.log"/>
+                <exclude name="*.iml"/>
+                <exclude name="*.ipr"/>
+                <exclude name="*.iws"/>
+                <include name="${dir.src}/**/*.*"/>
+                <include name="${dir.doc}/**/*.*"/>
+                <exclude name="${dir.doc}/api/**/*.*"/>
+                <exclude name="${dir.lib}/**/*.*"/>
 
             </zipfileset>
         </zip>

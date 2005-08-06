@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 /**
  * AllUpperCaseFormatterTest.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  */
@@ -34,9 +34,8 @@ public class AllUpperCaseFormatterTest
 
     /**
      * Constructor for AllUpperCaseFormatterTest.
-     * 
-     * @param name
-     *            name of the test.
+     *
+     * @param name name of the test.
      */
     public AllUpperCaseFormatterTest(final String name) {
         super(name);
@@ -45,9 +44,8 @@ public class AllUpperCaseFormatterTest
 
     /**
      * Main method to perform the tests.
-     * 
-     * @param args
-     *            Program arguments
+     *
+     * @param args Program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(AllUpperCaseFormatterTest.class);
@@ -59,9 +57,9 @@ public class AllUpperCaseFormatterTest
     public void testFormat() {
         final String name = "Anupam B Sengupta";
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
         final String result = formatter.format(name);
-        assertEquals("ANUPAM B SENGUPTA", result);
+        assertEquals("The returned value should have been all UPPER CASE", "ANUPAM B SENGUPTA", result);
     }
 
     /**
@@ -69,10 +67,10 @@ public class AllUpperCaseFormatterTest
      */
     public void testFormatWhenNull() {
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
 
         final String nullResult = formatter.format(null);
-        assertNull(nullResult);
+        assertNull("The returned value should have been null", nullResult);
 
     }
 
@@ -81,10 +79,10 @@ public class AllUpperCaseFormatterTest
      */
     public void testFormatWhenEmpty() {
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
 
         final String emptyResult = formatter.format("");
-        assertEquals("", emptyResult);
+        assertEquals("The returned value should have been empty", "", emptyResult);
 
     }
 }

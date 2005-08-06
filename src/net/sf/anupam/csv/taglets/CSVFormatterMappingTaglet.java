@@ -168,7 +168,7 @@ public class CSVFormatterMappingTaglet
 
             if (nameValuePair != null) {
 
-                if (nameValuePair[0].equalsIgnoreCase("name")) {
+                if ("name".equalsIgnoreCase(nameValuePair[0])) {
                     name = nameValuePair[1];
                 }
             }

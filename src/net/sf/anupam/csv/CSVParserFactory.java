@@ -74,11 +74,7 @@ public final class CSVParserFactory {
     /**
      * The CSV to POJO mapping repository.
      */
-    private Map<String, CSVBeanMapping> beanMappings;
-
-    static {
-
-    }
+    private transient final Map<String, CSVBeanMapping> beanMappings;
 
     /**
      * Constructor for CSVParserFactory. Private as this is a singleton.
@@ -155,12 +151,12 @@ public final class CSVParserFactory {
         if (!beanRefName.equalsIgnoreCase("none")) {
             final CSVBeanMapping referencedBean = getBeanMapping(beanRefName);
 
-            if (referencedBean != null) {
-                fieldMapping.setBeanReference(referencedBean);
-            } else {
+            if (referencedBean == null) {
                 LOG.warn("For field " + fieldMapping
                         + " the referenced bean does not exist");
                 fieldMapping.setBeanReferenceName("none");
+            } else {
+                fieldMapping.setBeanReference(referencedBean);
             }
         }
 
@@ -200,13 +196,13 @@ public final class CSVParserFactory {
 
         try {
             if (inClassPath) {
-                final InputStream is = ClassLoader
+                final InputStream inStream = ClassLoader
                         .getSystemResourceAsStream(csvFileName);
-                if (is == null) {
+                if (inStream == null) {
                     throw new FileNotFoundException("The CSV File: "
                             + csvFileName + " was not found in the classpath");
                 }
-                reader = new InputStreamReader(is);
+                reader = new InputStreamReader(inStream);
             } else {
                 reader = new FileReader(csvFileName);
 

@@ -67,12 +67,12 @@ public final class CSVFormatterFactory {
     /**
      * Mapping of the formatter name and the configuration.
      */
-    private Map<String, FormatterConfiguration> formatterLookupMap;
+    private transient final Map<String, FormatterConfiguration> formatterLookupMap;
 
     /**
      * The cached formatters.
      */
-    private Map<String, CSVFieldFormatter> formatterCache;
+    private transient final Map<String, CSVFieldFormatter> formatterCache;
 
 
     /**

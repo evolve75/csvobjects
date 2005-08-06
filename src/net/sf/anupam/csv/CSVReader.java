@@ -59,17 +59,17 @@ class CSVReader implements Iterable<List<String>> {
     /**
      * The CSV parser engine.
      */
-    private CSVParse parser;
+    private transient CSVParse parser;
 
     /**
      * Flag which indicates whether the reader has read all the records.
      */
-    private boolean readingComplete;
+    private transient boolean readingComplete;
 
     /**
      * Flag which indicates whether the CSV file has a header row.
      */
-    private boolean headerPresent;
+    private transient boolean headerPresent;
 
     /**
      * Constructor which accepts a reader on the CSV stream to parse. The
@@ -111,8 +111,8 @@ class CSVReader implements Iterable<List<String>> {
      */
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
         close();
+        super.finalize();
     }
 
     /**
@@ -132,18 +132,16 @@ class CSVReader implements Iterable<List<String>> {
      * Inner iterator class to provide the Iterable interface to the reader.
      */
     private class LineIterator implements Iterator<List<String>> {
-        // ~ Methods
-        // ------------------------------------------------------------
 
         /**
          * The parsed CSV field values.
          */
-        private String[] parsedValues;
+        private transient String[] parsedValues;
 
         /**
          * Flag indicating whether the previous line was read.
          */
-        private boolean haveReadPreviousLine;
+        private transient boolean haveReadPreviousLine;
 
         /**
          * Default Constructor.
@@ -181,10 +179,10 @@ class CSVReader implements Iterable<List<String>> {
          */
         public List<String> next() {
 
-            if (!haveReadPreviousLine) {
-                readOneLine();
-            } else {
+            if (haveReadPreviousLine) {
                 haveReadPreviousLine = false;
+            } else {
+                readOneLine();
             }
 
             if (isReadingComplete()) {

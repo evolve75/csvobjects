@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 /**
  * TrimWordFormatterTest.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  */
@@ -34,9 +34,8 @@ public class TrimWordFormatterTest
 
     /**
      * Constructor for TrimWordFormatterTest.
-     * 
-     * @param name
-     *            name of the test
+     *
+     * @param name name of the test
      */
     public TrimWordFormatterTest(final String name) {
         super(name);
@@ -44,9 +43,8 @@ public class TrimWordFormatterTest
 
     /**
      * Main method to perform the tests.
-     * 
-     * @param args
-     *            Program arguments
+     *
+     * @param args Program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(TrimWordFormatterTest.class);
@@ -59,9 +57,9 @@ public class TrimWordFormatterTest
     public void testFormat() {
         final String name = " Anupam Sengupta  ";
         final CSVFieldFormatter formatter = new TrimWordFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
         final String result = formatter.format(name);
-        assertEquals("Anupam Sengupta", result);
+        assertEquals("Should have trimmed the leading and trailing spaces", "Anupam Sengupta", result);
     }
 
     /**
@@ -70,10 +68,10 @@ public class TrimWordFormatterTest
      */
     public void testFormatWhenNull() {
         final CSVFieldFormatter formatter = new TrimWordFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
 
         final String nullResult = formatter.format(null);
-        assertNull(nullResult);
+        assertNull("Should have returned null", nullResult);
 
     }
 
@@ -86,7 +84,7 @@ public class TrimWordFormatterTest
         assertNotNull(formatter);
 
         final String emptyResult = formatter.format("");
-        assertEquals("", emptyResult);
+        assertEquals("Should have returned an empty string", "", emptyResult);
 
     }
 }

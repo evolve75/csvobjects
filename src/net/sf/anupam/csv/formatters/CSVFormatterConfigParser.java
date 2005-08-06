@@ -135,16 +135,16 @@ class CSVFormatterConfigParser {
     public synchronized static CSVFormatterConfigParser getConfigParser() {
 
         if (singleton == null) {
-            final InputStream is = CSVFormatterConfigParser.class.getClassLoader()
+            final InputStream inStream = CSVFormatterConfigParser.class.getClassLoader()
                     .getResourceAsStream("net/sf/anupam/csv/formatters/csv-formatter-config-digester-rules.xml");
-            if (is != null) {
-                final InputSource isrc = new InputSource(is);
+            if (inStream == null) {
+                LOG
+                        .error("The CSV Formatter Configuration Digester Rules XML was not found");
+            } else {
+                final InputSource isrc = new InputSource(inStream);
                 ruleSet = new FromXmlRuleSet(isrc);
                 LOG.info("Loaded Digester Rules for "
                         + CSVFormatterConfigParser.class);
-            } else {
-                LOG
-                        .error("The CSV Formatter Configuration Digester Rules XML was not found");
             }
             singleton = new CSVFormatterConfigParser();
         }

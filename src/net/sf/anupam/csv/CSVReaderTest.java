@@ -54,7 +54,7 @@ public class CSVReaderTest
     /**
      * The CSV reader to use in the test.
      */
-    private Reader csvReader;
+    private transient Reader csvReader;
 
     // ~ Constructors
     // -----------------------------------------------------------
@@ -115,7 +115,7 @@ public class CSVReaderTest
      */
     public final void testCSVReader() {
         final CSVReader reader = new CSVReader(csvReader, true);
-        assertNotNull(reader);
+        assertNotNull("The CSV Reader cannot be null", reader);
         reader.close();
     }
 
@@ -124,16 +124,16 @@ public class CSVReaderTest
      */
     public final void testIterator() {
         final CSVReader reader = new CSVReader(csvReader, true);
-        assertNotNull(reader);
+        assertNotNull("The CSV Reader cannot be null", reader);
         for (List<String> l : reader) {
             for (String value : l) {
-                assertNotNull(value);
+                assertNotNull("The parsed CSV fields cannot be null", value);
                 LOG.info(value);
             }
         }
         final Iterator iter = reader.iterator();
 
-        assertFalse(iter.hasNext());
+        assertFalse("The CSV parsed iterator should have returned at least one line", iter.hasNext());
         try {
             iter.next();
             fail("Should have thrown an exception");

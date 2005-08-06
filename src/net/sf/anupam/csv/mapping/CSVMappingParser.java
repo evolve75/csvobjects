@@ -63,19 +63,19 @@ public class CSVMappingParser {
     /**
      * The digester to use for parsing the mapping file.
      */
-    private Digester digester = new Digester();
+    private transient Digester digester = new Digester();
 
     static {
 
-        final InputStream is = ClassLoader
+        final InputStream inStream = ClassLoader
                 .getSystemResourceAsStream("net/sf/anupam/csv/mapping/csv-mapping-digester-rules.xml");
-        if (is != null) {
-            final InputSource isrc = new InputSource(is);
+        if (inStream == null) {
+            LOG.error("The CSV Mapping Digester Rules XML was not found");
+        } else {
+            final InputSource isrc = new InputSource(inStream);
             ruleSet = new FromXmlRuleSet(isrc);
             LOG.info("Loaded Digester Rules for "
                     + CSVMappingParser.class);
-        } else {
-            LOG.error("The CSV Mapping Digester Rules XML was not found");
         }
 
     }
@@ -100,11 +100,11 @@ public class CSVMappingParser {
      */
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
         if (digester != null) {
             digester.clear();
             digester = null;
         }
+        super.finalize();
     }
 
     /**

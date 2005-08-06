@@ -67,7 +67,7 @@ public class CSVFormatterConfigParserTest
      */
     public void testGetFormatMappings() {
         final CSVFormatterConfigParser parser = CSVFormatterConfigParser.getConfigParser();
-        assertNotNull(parser);
+        assertNotNull("The FMT configuration parser cannot be null", parser);
 
         final Map<String, FormatterConfiguration> formatterMap = parser
                 .getFormatMappings(
@@ -79,8 +79,7 @@ public class CSVFormatterConfigParserTest
         for (String formatterName : formatterMap.keySet()) {
             final FormatterConfiguration formatterConfig = formatterMap
                     .get(formatterName);
-            assertNotNull(formatterConfig);
-            LOG.info(formatterConfig);
+            assertNotNull("The formatter configuration cannot be null", formatterConfig);
         }
 
     }

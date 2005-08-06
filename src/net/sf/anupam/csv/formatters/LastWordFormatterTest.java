@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 /**
  * LastWordFormatterTest.
- * 
+ *
  * @author Anupam Sengupta
  * @version $Revision$
  */
@@ -34,9 +34,8 @@ public class LastWordFormatterTest
 
     /**
      * Constructor for LastWordFormatterTest.
-     * 
-     * @param name
-     *            name of the test
+     *
+     * @param name name of the test
      */
     public LastWordFormatterTest(final String name) {
         super(name);
@@ -44,9 +43,8 @@ public class LastWordFormatterTest
 
     /**
      * Main method to perform the tests.
-     * 
-     * @param args
-     *            Program arguments
+     *
+     * @param args Program arguments
      */
     public static void main(final String [] args) {
         junit.textui.TestRunner.run(LastWordFormatterTest.class);
@@ -59,9 +57,9 @@ public class LastWordFormatterTest
     public void testFormat() {
         final String name = "Anupam B Sengupta";
         final CSVFieldFormatter formatter = new LastWordFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
         final String result = formatter.format(name);
-        assertEquals("Sengupta", result);
+        assertEquals("Should have returned the last name", "Sengupta", result);
     }
 
     /**
@@ -70,10 +68,10 @@ public class LastWordFormatterTest
      */
     public void testFormatWhenNull() {
         final CSVFieldFormatter formatter = new LastWordFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
 
         final String nullResult = formatter.format(null);
-        assertNull(nullResult);
+        assertNull("Should have returned null", nullResult);
 
     }
 
@@ -83,10 +81,10 @@ public class LastWordFormatterTest
      */
     public void testFormatWhenEmpty() {
         final CSVFieldFormatter formatter = new LastWordFormatter();
-        assertNotNull(formatter);
+        assertNotNull("The CSV Field formatter cannot be null", formatter);
 
         final String emptyResult = formatter.format("");
-        assertEquals("", emptyResult);
+        assertEquals("Should have returned an empty string", "", emptyResult);
 
     }
 }

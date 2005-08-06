@@ -64,7 +64,7 @@ public class CSVBeanMapping implements Iterable<CSVFieldMapping> {
     /**
      * List of mapped CSV fields for this bean mapping.
      */
-    private SortedSet<CSVFieldMapping> fields;
+    private final SortedSet<CSVFieldMapping> fields;
 
     /**
      * The highest field position number.
