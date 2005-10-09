@@ -22,11 +22,12 @@
 package net.sf.anupam.csv;
 
 import junit.framework.TestCase;
+import test.net.sf.anupam.csv.beans.Designation;
+import test.net.sf.anupam.csv.beans.Employee;
+import test.net.sf.anupam.csv.beans.Person;
 import net.sf.anupam.csv.exceptions.CSVOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import test.net.sf.anupam.csv.beans.Designation;
-import test.net.sf.anupam.csv.beans.Employee;
 
 import java.io.FileNotFoundException;
 
@@ -43,6 +44,11 @@ public class CSVParserTest
      * The sample data file to use for the test.
      */
     private static final String SAMPLE_CSV_FILE = "test/net/sf/anupam/csv/beans/sample.csv";
+
+    /**
+     * The second sample data file to use for the test.
+     */
+    private static final String SECOND_SAMPLE_CSV_FILE = "test/net/sf/anupam/csv/beans/sample-2.csv";
 
     /**
      * The logger to use.
@@ -65,7 +71,9 @@ public class CSVParserTest
      * @param args Program arguments
      */
     public static void main(final String [] args) {
-        junit.textui.TestRunner.run(CSVParserTest.class);
+        junit.textui
+                .TestRunner
+                .run(CSVParserTest.class);
     }
 
     /**
@@ -74,12 +82,13 @@ public class CSVParserTest
      * @throws net.sf.anupam.csv.exceptions.CSVOException
      *
      */
-    public void testGetMappedBeans() throws CSVOException {
+    public void testGetMappedBeans()
+            throws CSVOException {
         final CSVParserFactory factory = CSVParserFactory.getSingleton();
         assertNotNull("The singleton instance of parser factory should not be null", factory);
         try {
             final CSVParser parser = factory.getCSVParser("employeeBean",
-                    SAMPLE_CSV_FILE, true);
+                                                          SAMPLE_CSV_FILE, true);
             assertNotNull("The parser for employeeBean should not be null", parser);
             for (Object bean : parser) {
                 assertTrue("The parsed bean should be an instance of Employee", bean instanceof Employee);
@@ -88,7 +97,8 @@ public class CSVParserTest
                 assertEquals("The employee first name does not match", "John", empl.getFirstName());
                 assertEquals("The employee last name does not match", "Doe", empl.getLastName());
                 assertEquals("The employee client ID does not match", "BILLID01", empl.getClientSuppliedID());
-                assertEquals("The employee secondary ID does not match", "CONTRACTOR007", empl.getClientSuppliedSecondaryID());
+                assertEquals("The employee secondary ID does not match", "CONTRACTOR007",
+                             empl.getClientSuppliedSecondaryID());
                 final Designation desgn = empl.getDesignation();
                 assertNotNull("The employee designation should not be null", desgn);
                 assertEquals("The employee designation does not match", "Lead", desgn.getDesignation());
@@ -97,9 +107,33 @@ public class CSVParserTest
             parser.close();
         } catch (final FileNotFoundException e) {
             fail("Unexpected exception: "
-                    + e.getLocalizedMessage());
+                 + e.getLocalizedMessage());
         }
 
+    }
+
+    /**
+     * Test case to simulate a multiple record to single record mapping scenario.
+     */
+    public void testMultipleRecordScenario()
+            throws Exception {
+        final CSVParserFactory factory = CSVParserFactory.getSingleton();
+        assertNotNull("The singleton instance of parser factory should not be null", factory);
+        try {
+            final CSVParser parser = factory.getCSVParser("personBean",
+                                                          SECOND_SAMPLE_CSV_FILE, true);
+            assertNotNull("The parser for personBean should not be null", parser);
+            LOG.info(parser);
+            for (Object bean : parser) {
+                assertTrue("The parsed bean should be an instance of Person", bean instanceof Person);
+                final Person person = (Person) bean;
+                LOG.info(person);
+            }
+            parser.close();
+        } catch (final FileNotFoundException e) {
+            fail("Unexpected exception: "
+                 + e.getLocalizedMessage());
+        }
     }
 
 }
