@@ -115,7 +115,8 @@ public class CSVMappingParser {
      * @return a map of CSV bean mappings. An empty map is returned if an error
      *         occurs
      */
-    public Map<String, CSVBeanMapping> getMappings(final String xmlFileName,
+    @SuppressWarnings("unchecked")
+	public Map<String, CSVBeanMapping> getMappings(final String xmlFileName,
                                                    final boolean inClassPath) {
 
         final Map<String, CSVBeanMapping> beanMap = new WeakHashMap<String, CSVBeanMapping>();

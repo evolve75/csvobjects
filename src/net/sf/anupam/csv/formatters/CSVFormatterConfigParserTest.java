@@ -39,7 +39,8 @@ public class CSVFormatterConfigParserTest
     /**
      * The logger to use.
      */
-    private static final Log LOG = LogFactory
+    @SuppressWarnings("unused")
+	private static final Log LOG = LogFactory
             .getLog(CSVFormatterConfigParserTest.class);
 
     /**

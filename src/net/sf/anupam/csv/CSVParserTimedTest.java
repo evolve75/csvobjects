@@ -35,6 +35,9 @@ import junit.framework.TestCase;
  */
 public class CSVParserTimedTest extends TestCase {
 
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
 
         final long maxElapsedTime = 100L;
@@ -51,6 +54,10 @@ public class CSVParserTimedTest extends TestCase {
 
     }
 
+    /**
+     * Run the tests in a console.
+     * @param args
+     */
     public static void main(String[] args) {
         junit.textui
                 .TestRunner

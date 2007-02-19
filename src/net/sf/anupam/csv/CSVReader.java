@@ -54,7 +54,7 @@ class CSVReader implements Iterable<List<String>> {
     /**
      * Logger to use.
      */
-    private static final Log LOG = LogFactory.getLog(CSVReader.class);
+    protected static final Log LOG = LogFactory.getLog(CSVReader.class);
 
     /**
      * The CSV parser engine.

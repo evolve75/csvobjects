@@ -131,7 +131,7 @@ public class CSVReaderTest
                 LOG.info(value);
             }
         }
-        final Iterator iter = reader.iterator();
+        final Iterator<List<String>> iter = reader.iterator();
 
         assertFalse("The CSV parsed iterator should have returned at least one line", iter.hasNext());
         try {

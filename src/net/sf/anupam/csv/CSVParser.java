@@ -61,7 +61,7 @@ public class CSVParser implements Iterable<Object> {
     /**
      * The logger to use.
      */
-    private static final Log LOG = LogFactory.getLog(CSVParser.class);
+    protected static final Log LOG = LogFactory.getLog(CSVParser.class);
 
     /**
      * The CSV Reader to use for this parser.
@@ -287,7 +287,7 @@ public class CSVParser implements Iterable<Object> {
      *
      * @return Returns the root bean mapping.
      */
-    private CSVBeanMapping getRootBeanMapping() {
+    protected CSVBeanMapping getRootBeanMapping() {
         return this.rootBeanMapping;
     }
 

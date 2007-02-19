@@ -100,7 +100,8 @@ class CSVFormatterConfigParser {
      * @param xmlFileName the XML file to load the mappings from
      * @param inClassPath indicates whether the mapping file is in the classpath
      */
-    private void loadMappings(final String xmlFileName, final boolean inClassPath) {
+    @SuppressWarnings("unchecked")
+	private void loadMappings(final String xmlFileName, final boolean inClassPath) {
         try {
             final InputStream xmlStream = (inClassPath)
                     ? getClass().getClassLoader()
@@ -132,6 +133,10 @@ class CSVFormatterConfigParser {
         }
     }
 
+    /**
+     * Returns the formatted configuration parser.
+     * @return the formatter configuration parser
+     */
     public synchronized static CSVFormatterConfigParser getConfigParser() {
 
         if (singleton == null) {

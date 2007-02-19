@@ -164,12 +164,10 @@ public class CSVFieldMapping implements Comparable<CSVFieldMapping> {
     public int compareTo(final CSVFieldMapping other) {
         if (this.equals(other)) {
             return 0;
-        } else {
-            return new CompareToBuilder().append(this.getFieldName(), other.getFieldName())
-                    .append(this.getFieldPosition(), other.getFieldPosition()).toComparison();
-
-
         }
+        
+		return new CompareToBuilder().append(this.getFieldName(), other.getFieldName())
+		        .append(this.getFieldPosition(), other.getFieldPosition()).toComparison();
 
     }
 

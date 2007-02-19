@@ -114,6 +114,7 @@ public class CSVParserTest
 
     /**
      * Test case to simulate a multiple record to single record mapping scenario.
+     * @throws Exception thrown if an unexpected exception is thrown
      */
     public void testMultipleRecordScenario()
             throws Exception {

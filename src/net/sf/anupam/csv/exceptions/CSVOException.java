@@ -30,6 +30,11 @@ package net.sf.anupam.csv.exceptions;
  */
 public class CSVOException extends Exception {
 
+	/**
+	 * Declared the serial version UID per Serialization guidelines.
+	 */
+	private static final long serialVersionUID = 2000896023138435841L;
+	
     /**
      * Default Constructor.
      */

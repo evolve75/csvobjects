@@ -175,13 +175,13 @@ public final class CSVFormatterFactory {
     public CSVFieldFormatter createFormatterFor(final String formatterName)
             throws CSVOException {
 
-        // If a cache hit, then return the cached formatter
-        if (formatterCache.containsKey(formatterName)) {
-            return formatterCache.get(formatterName);
-        } else {
-            LOG.warn("Formatter: " + formatterName + " not found");
+    	// Guard condition.
+        if (!formatterCache.containsKey(formatterName)) {
+        	LOG.warn("Formatter: " + formatterName + " not found");
             throw new CSVOException("Formatter: " + formatterName + " not found");
         }
-
+        
+        // If a cache hit, then return the cached formatter        
+        return formatterCache.get(formatterName);
     }
 }
