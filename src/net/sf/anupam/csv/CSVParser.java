@@ -184,9 +184,9 @@ public class CSVParser implements Iterable<Object> {
          *
          * @param csvFieldValue the field to format
          * @param fieldMapping  the field mapping from which the formatter should be used
-         * @return the formatted value
+         * @return the formatted value (need not be a String)
          */
-        private String formatValue(final String csvFieldValue,
+        private Object formatValue(final String csvFieldValue,
                                    final CSVFieldMapping fieldMapping) {
             final CSVFieldFormatter formatter = fieldMapping.getFormatter();
             if (formatter == null) {

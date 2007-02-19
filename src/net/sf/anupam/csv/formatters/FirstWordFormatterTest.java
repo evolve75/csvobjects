@@ -58,7 +58,7 @@ public class FirstWordFormatterTest
         final String name = "Anupam B Sengupta";
         final CSVFieldFormatter formatter = new FirstWordFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
-        final String result = formatter.format(name);
+        final String result = (String) formatter.format(name);
         assertEquals("The first name should have been returned", "Anupam", result);
     }
 
@@ -70,7 +70,7 @@ public class FirstWordFormatterTest
         final CSVFieldFormatter formatter = new FirstWordFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
 
-        final String nullResult = formatter.format(null);
+        final String nullResult = (String) formatter.format(null);
         assertNull("null should have been returned", nullResult);
 
     }
@@ -83,7 +83,7 @@ public class FirstWordFormatterTest
         final CSVFieldFormatter formatter = new FirstWordFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
 
-        final String emptyResult = formatter.format("");
+        final String emptyResult = (String) formatter.format("");
         assertEquals("An empty string should have been returned", "", emptyResult);
 
     }

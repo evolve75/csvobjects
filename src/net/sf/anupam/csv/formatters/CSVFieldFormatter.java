@@ -43,7 +43,7 @@ public interface CSVFieldFormatter {
      * 
      * @param value
      *            the CSV field value to format
-     * @return the formatted result
+     * @return the formatted result (need not be a String)
      */
-    String format(final String value);
+    Object format(final String value);
 }

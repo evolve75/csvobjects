@@ -58,7 +58,7 @@ public class AllUpperCaseFormatterTest
         final String name = "Anupam B Sengupta";
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
-        final String result = formatter.format(name);
+        final String result = (String) formatter.format(name);
         assertEquals("The returned value should have been all UPPER CASE", "ANUPAM B SENGUPTA", result);
     }
 
@@ -69,7 +69,7 @@ public class AllUpperCaseFormatterTest
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
 
-        final String nullResult = formatter.format(null);
+        final String nullResult = (String) formatter.format(null);
         assertNull("The returned value should have been null", nullResult);
 
     }
@@ -81,7 +81,7 @@ public class AllUpperCaseFormatterTest
         final CSVFieldFormatter formatter = new AllUpperCaseFormatter();
         assertNotNull("The CSV Field formatter cannot be null", formatter);
 
-        final String emptyResult = formatter.format("");
+        final String emptyResult = (String) formatter.format("");
         assertEquals("The returned value should have been empty", "", emptyResult);
 
     }
